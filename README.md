@@ -2,42 +2,65 @@
 
 ## Getting started
 
-`$ npm install react-native-vivox --save`
+`$ yarn add react-native-vivox`
 
-### Mostly automatic installation
+### Mostly automatic installation (RN < 0.60)
 
 `$ react-native link react-native-vivox`
 
-### Manual installation
-
-
-#### iOS
-
-1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
-2. Go to `node_modules` ➜ `react-native-vivox` and add `Vivox.xcodeproj`
-3. In XCode, in the project navigator, select your project. Add `libVivox.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-4. Run your project (`Cmd+R`)<
-
+### Additional steps
 #### Android
+1. Unzip `aar.zip` in `android`
+2. Add the following code in `android/app/build.gradle`
+```groovy
+repositories {
+    flatDir {
+        dirs "../aar"
+    }
+}
 
-1. Open up `android/app/src/main/java/[...]/MainApplication.java`
-  - Add `import com.reactlibrary.VivoxPackage;` to the imports at the top of the file
-  - Add `new VivoxPackage()` to the list returned by the `getPackages()` method
-2. Append the following lines to `android/settings.gradle`:
-  	```
-  	include ':react-native-vivox'
-  	project(':react-native-vivox').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-vivox/android')
-  	```
-3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
-  	```
-      compile project(':react-native-vivox')
-  	```
+dependencies {
+    // ...
+    debugImplementation(name: 'sdk-debug', ext: 'aar')
+    releaseImplementation(name: 'sdk-release', ext: 'aar')
+}
+```
+3. Add the following code in `android/app/src/main/java/com.package.name/MainApplication.java`
+```java
+import com.vivox.sdk.JniHelpers; // <-- this line
+
+// ...
+
+@Override
+public void onCreate() {
+  super.onCreate();
+  JniHelpers.init(getApplicationContext(), null, new String[]{"mvc"}); // <-- this line
+}
+```
 
 
 ## Usage
+### Example
+This example will connect your app to your Vivox server and join the `test123` voice channel. Make sure you requested microphone permission before!
 ```javascript
+import React from 'react';
 import Vivox from 'react-native-vivox';
 
-// TODO: What to do with the module?
-Vivox;
+class App extends React.Component {
+  async componentDidMount(): void {
+    await Vivox.connect("https://vdx5.www.vivox.com/api2/", "issuer", "key", "vdx5.vivox.com");
+    await Vivox.joinMatch("test123");
+  }
+
+  render() {
+    return null;
+  }
+}
+
+export default App;
+
+```
+### Connect to the Vivox server
+```javascript
+Vivox.connect("server", "issuer", "key", "realm"); // returns Promise<>
 ```
