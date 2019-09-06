@@ -1,0 +1,204 @@
+/* Copyright (c) 2016-2018 by Mercer Road Corp
+ *
+ * Permission to use, copy, modify or distribute this software in binary or source form
+ * for any purpose is allowed only under explicit prior consent in writing from Mercer Road Corp
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND MERCER ROAD CORP DISCLAIMS
+ * ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL MERCER ROAD CORP
+ * BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+ * DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
+ * PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+ * ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
+ * SOFTWARE.
+ */
+
+# include <stdio.h>
+# include <iostream>
+# include <vector>
+
+# include <jni.h>
+
+# ifndef WIN32
+#   include <signal.h>
+# endif
+
+# include "MatchVoiceChat.h"
+# include "MatchVoiceChatExternals.h"
+
+# ifdef __ANDROID__
+#   include <android/log.h>
+#   define LOG_TAG "mvc"
+#   define LOG_ERR(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
+#   define LOG_INFO(...) __android_log_print(ANDROID_LOG_INFO,  LOG_TAG, __VA_ARGS__)
+# else
+#   define LOG_ERR(...) fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n");
+#   define LOG_INFO(...) fprintf(stdout, __VA_ARGS__); fprintf(stdout, "\n");
+# endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void * /* reserved */)
+{
+    LOG_INFO("%s: calling vivox_mvc_setVM( jvm )...", __FUNCTION__);
+    vivox_mvc_setVM(jvm);
+    return JNI_VERSION_1_2;
+}
+
+JNIEXPORT void JNI_OnUnload(JavaVM *, void *)
+{
+    vivox_mvc_setVM(NULL);
+    vivox_mvc_destroy();
+}
+
+
+JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_serverConnect(JNIEnv *jenv, jobject /* obj */, jstring vivoxServer, jstring issuer, jstring key, jstring realm)
+{
+    const char *pszVivoxServer = (const char *)jenv->GetStringUTFChars(vivoxServer, 0);
+    const char *pszIssuer = (const char *)jenv->GetStringUTFChars(issuer, 0);
+    const char *pszKey = (const char *)jenv->GetStringUTFChars(key, 0);
+    const char *pszRealm = (const char *)jenv->GetStringUTFChars(realm, 0);
+
+    LOG_INFO("%s: calling ServerConnect()...", __FUNCTION__);
+    bool bResult = vivox_mvc_serverConnect(pszVivoxServer, pszIssuer, pszKey, pszRealm) ? false : true;
+
+    if (NULL != pszRealm) {
+        jenv->ReleaseStringUTFChars(realm, pszRealm);
+        pszRealm = NULL;
+    }
+    if (NULL != pszKey) {
+        jenv->ReleaseStringUTFChars(key, pszKey);
+        pszKey = NULL;
+    }
+    if (NULL != pszIssuer) {
+        jenv->ReleaseStringUTFChars(issuer, pszIssuer);
+        pszIssuer = NULL;
+    }
+    if (NULL != pszVivoxServer) {
+        jenv->ReleaseStringUTFChars(vivoxServer, pszVivoxServer);
+        pszVivoxServer = NULL;
+    }
+
+    return bResult;
+}
+
+JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_serverDisconnect(JNIEnv * /* jenv */, jobject /* obj */)
+{
+    return vivox_mvc_serverDisconnect() ? false : true;
+}
+
+JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_matchJoin(JNIEnv *jenv, jobject /* obj */, jstring matchName)
+{
+    const char *pszMatchName  = (const char *)jenv->GetStringUTFChars(matchName,  0);
+
+    bool bResult = vivox_mvc_matchJoin(pszMatchName) ? false : true;
+
+    if (NULL != pszMatchName) {
+        jenv->ReleaseStringUTFChars(matchName, pszMatchName);
+        pszMatchName = NULL;
+    }
+
+    return bResult;
+}
+
+JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_matchLeave(JNIEnv * /* jenv */, jobject /* obj */)
+{
+    return vivox_mvc_matchLeave() ? false : true;
+}
+
+jclass g_CallbackClass  = NULL;
+jmethodID g_CallbackMethod = NULL;
+
+void MatchVoiceChatCallback(VivoxClientApi::MatchVoiceChat *pMVC)
+{
+    JNIEnv *jenv = NULL;
+    JavaVM *vm   = vivox_mvc_getVM();
+
+    LOG_INFO("%s: state = %s", __FUNCTION__, VivoxClientApi::MatchVoiceChat::GetStateName(pMVC->GetState()).c_str());
+
+    if (NULL == vm) {
+        LOG_ERR("%s: ERROR, vm == NULL", __FUNCTION__);
+        return;
+    }
+
+    int getEnvStat = vm->GetEnv((void **)&jenv, JNI_VERSION_1_2);
+
+    if (getEnvStat == JNI_EDETACHED) {
+        if (vm->AttachCurrentThread(&jenv, NULL) != 0) {
+            LOG_ERR("%s: ERROR, AttachCurrentThread", __FUNCTION__);
+            return;
+        }
+    } else if (getEnvStat == JNI_OK) {
+        //
+    } else if (getEnvStat == JNI_EVERSION) {
+        LOG_ERR("%s: ERROR, JNI_EVERSION", __FUNCTION__);
+        return;
+    }
+
+    if (NULL == g_CallbackMethod) {
+        LOG_ERR("%s: ERROR, g_CallbackMethod == NULL", __FUNCTION__);
+        return;
+    }
+
+    LOG_INFO("%s: call CallStaticVoidMethod( vivoxStatusCallback )", __FUNCTION__);
+    jenv->CallStaticVoidMethod(g_CallbackClass, g_CallbackMethod);
+
+    if (jenv->ExceptionCheck()) {
+        jenv->ExceptionDescribe();
+    }
+
+    vm->DetachCurrentThread();
+}
+
+JNIEXPORT jint JNICALL Java_com_reactnative_vivox_MatchVoiceChat_getState(JNIEnv * /* jenv */, jobject /* obj */)
+{
+    return vivox_mvc_getState();
+}
+
+JNIEXPORT jstring JNICALL Java_com_reactnative_vivox_MatchVoiceChat_getStateName(JNIEnv *jenv, jobject /* obj */, jint state)
+{
+    return jenv->NewStringUTF(vivox_mvc_getStateName(state));
+}
+
+JNIEXPORT void JNICALL Java_com_reactnative_vivox_MatchVoiceChat_setCallback(JNIEnv *jenv, jobject /* obj */, jobject theClass, jstring staticMethod)
+{
+    if (g_CallbackClass) {
+        LOG_INFO("%s: clearing the callback", __FUNCTION__);
+        jenv->DeleteGlobalRef(g_CallbackClass);
+        g_CallbackClass = NULL;
+        g_CallbackMethod = NULL;
+        vivox_mvc_setCallback(NULL);
+    }
+
+    if (!theClass) {
+        LOG_INFO("%s: theClass == NULL", __FUNCTION__);
+        return;
+    }
+
+    jclass cls = (jclass)theClass;
+
+    const char *pszStaticMethodName = (const char *)jenv->GetStringUTFChars(staticMethod,  0);
+
+    jmethodID methodID = jenv->GetStaticMethodID(cls, pszStaticMethodName, "()V"); // "(Ljava/lang/String;)V"
+
+    if (methodID) {
+        LOG_INFO("%s: setting callback \"%s\"...", __FUNCTION__, pszStaticMethodName);
+        g_CallbackClass = (jclass)jenv->NewGlobalRef(theClass);
+        g_CallbackMethod = methodID;
+        vivox_mvc_setCallback(MatchVoiceChatCallback);
+        LOG_INFO("%s: callback set", __FUNCTION__);
+    } else {
+        LOG_ERR("%s: method '%s' not found", __FUNCTION__, pszStaticMethodName);
+    }
+
+    if (NULL != pszStaticMethodName) {
+        jenv->ReleaseStringUTFChars(staticMethod, pszStaticMethodName);
+        pszStaticMethodName = NULL;
+    }
+}
+
+#ifdef __cplusplus
+}
+#endif

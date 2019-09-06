@@ -35,6 +35,11 @@ android {
     versionCode 1
     versionName "1.0"
   }
+  sourceSets {
+    main {
+      jni.srcDirs = [] // disable automatic ndk-build
+    }
+  }
   lintOptions {
     abortOnError false
   }
@@ -126,3 +131,10 @@ afterEvaluate { project ->
         }
     }
 }
+
+for (String arch : ['armeabi-v7a', 'x86', 'arm64-v8a']) {
+    for (String module : ['vivox-sdk']) {
+        android.packagingOptions.pickFirst "lib/${arch}/lib${module}.so"
+    }
+}
+
