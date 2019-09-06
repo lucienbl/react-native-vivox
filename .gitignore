@@ -40,3 +40,7 @@ local.properties
 buck-out/
 \.buckd/
 *.keystore
+
+# c++ build
+libs
+obj
