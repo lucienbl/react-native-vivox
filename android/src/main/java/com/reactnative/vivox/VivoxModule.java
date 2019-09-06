@@ -1,5 +1,6 @@
 package com.reactnative.vivox;
 
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -20,8 +21,38 @@ public class VivoxModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void sampleMethod(String stringArgument, int numberArgument, Callback callback) {
-        // TODO: Implement some actually useful functionality
-        callback.invoke("Received numberArgument: " + numberArgument + " stringArgument: " + stringArgument);
+    public void connect(String vivoxServer, String issuer, String key, String realm, Promise promise) {
+        try {
+            promise.resolve(MatchVoiceChat.serverConnect(vivoxServer, issuer, key, realm));
+        } catch (Exception e) {
+            promise.reject(e);
+        }
+    }
+
+    @ReactMethod
+    public void joinMatch(String matchName, Promise promise) {
+        try {
+            promise.resolve(MatchVoiceChat.matchJoin(matchName));
+        } catch (Exception e) {
+            promise.reject(e);
+        }
+    }
+
+    @ReactMethod
+    public void leaveMatch(Promise promise) {
+        try {
+            promise.resolve(MatchVoiceChat.matchLeave());
+        } catch (Exception e) {
+            promise.reject(e);
+        }
+    }
+
+    @ReactMethod
+    public void disconnect(Promise promise) {
+        try {
+            promise.resolve(MatchVoiceChat.serverDisconnect());
+        } catch (Exception e) {
+            promise.reject(e);
+        }
     }
 }
