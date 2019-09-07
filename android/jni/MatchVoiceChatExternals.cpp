@@ -80,9 +80,9 @@ JNIEXPORT void JNICALL vivox_mvc_destroy()
     freeMVC();
 }
 
-JNIEXPORT int JNICALL vivox_mvc_serverConnect(const char *pszVivoxServer, const char *pszIssuer, const char *pszKey, const char *pszRealm)
+JNIEXPORT int JNICALL vivox_mvc_serverConnect(const char *pszVivoxServer, const char *pszIssuer, const char *pszRealm)
 {
-    return getMVC()->ServerConnect(pszVivoxServer, pszIssuer, pszKey, pszRealm) ? 0 : 1;
+    return getMVC()->ServerConnect(pszVivoxServer, pszIssuer, pszRealm) ? 0 : 1;
 }
 
 JNIEXPORT int JNICALL vivox_mvc_serverDisconnect()
@@ -90,9 +90,14 @@ JNIEXPORT int JNICALL vivox_mvc_serverDisconnect()
     return getMVC()->ServerDisconnect() ? 0 : 1;
 }
 
-JNIEXPORT int JNICALL vivox_mvc_matchJoin(const char *pszMatchName)
+JNIEXPORT int JNICALL vivox_mvc_matchJoin(const char *pszMatchName, const char *pszMatchToken)
 {
-    return getMVC()->MatchJoin(pszMatchName) ? 0 : 1;
+    return getMVC()->MatchJoin(pszMatchName, pszMatchToken) ? 0 : 1;
+}
+
+JNIEXPORT int JNICALL vivox_mvc_setLoginCredentials(const char *pszUserId, const char *pszUserToken)
+{
+    return getMVC()->SetLoginCredentials(pszUserId, pszUserToken) ? 0 : 1;
 }
 
 JNIEXPORT int JNICALL vivox_mvc_matchLeave()

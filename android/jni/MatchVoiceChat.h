@@ -30,8 +30,9 @@ public:
     // Main Controls
 
 public:
-    bool ServerConnect(const char *pszVivoxServer, const char *pszIssuer, const char *pszKey, const char *pszRealm);
-    bool MatchJoin(const char *pszMatchName);
+    bool ServerConnect(const char *pszVivoxServer, const char *pszIssuer, const char *pszRealm);
+    bool MatchJoin(const char *pszMatchName, const char *pszMatchToken);
+    bool SetLoginCredentials(const char *pszUserId, const char *pszUserToken);
     bool MatchLeave();
     bool ServerDisconnect();
 

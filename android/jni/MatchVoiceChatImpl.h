@@ -33,8 +33,9 @@ public:
     // Main Controls
 
 public:
-    bool ServerConnect(const char *pszVivoxServer, const char *pszIssuer, const char *pszKey, const char *pszRealm);
-    bool MatchJoin(const char *pszMatchName);
+    bool ServerConnect(const char *pszVivoxServer, const char *pszIssuer, const char *pszRealm);
+    bool MatchJoin(const char *pszMatchName, const char *pszMatchToken);
+    bool SetLoginCredentials(const char *pszUserId, const char *pszUserToken);
     bool MatchLeave();
     bool ServerDisconnect();
 
@@ -75,18 +76,16 @@ protected:
         public Command
     {
     public:
-        CommandConnect(const char *pszVivoxServer, const char *pszIssuer, const char *pszKey, const char *pszRealm) :
+        CommandConnect(const char *pszVivoxServer, const char *pszIssuer, const char *pszRealm) :
             Command(cmdConnect),
             m_sVivoxServer(pszVivoxServer),
             m_sIssuer(pszIssuer),
-            m_sKey(pszKey),
             m_sRealm(pszRealm)
         {
         }
 
         std::string m_sVivoxServer; // HTTP(S) URL of the vivox server to log in
         std::string m_sIssuer;
-        std::string m_sKey;
         std::string m_sRealm;
     };
 
@@ -94,13 +93,15 @@ protected:
         public Command
     {
     public:
-        CommandJoin(const char *pszMatchName) :
+        CommandJoin(const char *pszMatchName, const char *pszMatchToken) :
             Command(cmdJoin),
-            m_sMatchName(pszMatchName)
+            m_sMatchName(pszMatchName),
+            m_sMatchToken(pszMatchToken)
         {
         }
 
         std::string m_sMatchName; // string identifying the match
+        std::string m_sMatchToken;
     };
 
     class CommandLeave :
@@ -187,12 +188,13 @@ protected:
 
     // Current match parameters
     std::string m_sUserID; // empty string for anonymous user
+    std::string m_sUserToken;
     std::string m_sVivoxServerURL;
     std::string m_sMatchName;
+    std::string m_sMatchToken;
     std::string m_sMatchChannelURI;
 
     std::string m_sIssuer;
-    std::string m_sKey;
     std::string m_sRealm;
 
     // Desired match parameters - trategy target
@@ -201,9 +203,6 @@ protected:
 
     // URL parameter escaping helper
     static std::string URLEscape(const char *s, unsigned int nLen);
-
-    // Token generation helper
-    std::string GetCredentials(const char *vxa, const char *sub, const char *from_uri, const char *to_uri);
 
 protected:
     // const char *m_accessTokenIssuer;

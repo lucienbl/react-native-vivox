@@ -69,7 +69,6 @@ MatchVoiceChatImpl::MatchVoiceChatImpl(MatchVoiceChat *pMVC) :
     m_dblNextEventTime(0)
 {
     CHECK(pMVC);
-    m_sUserID = ".werewolf-wwo-dev.lucienbl2.";
     InternalInitialize();
 }
 
@@ -145,7 +144,7 @@ MatchVoiceChat::EState MatchVoiceChatImpl::GetState()
     return m_state;
 }
 
-bool MatchVoiceChatImpl::ServerConnect(const char *pszVivoxServer, const char *pszIssuer, const char *pszKey, const char *pszRealm)
+bool MatchVoiceChatImpl::ServerConnect(const char *pszVivoxServer, const char *pszIssuer, const char *pszRealm)
 {
     if (!InternalInitialize()) {
         LOG_ERR("%s: InternalInitialize() failed", __FUNCTION__);
@@ -155,17 +154,30 @@ bool MatchVoiceChatImpl::ServerConnect(const char *pszVivoxServer, const char *p
         LOG_ERR("%s: invalid Vivox server URL", __FUNCTION__);
         return false;
     }
-    SendCommand(new CommandConnect(pszVivoxServer, pszIssuer, pszKey, pszRealm));
+    SendCommand(new CommandConnect(pszVivoxServer, pszIssuer, pszRealm));
     return true;
 }
 
-bool MatchVoiceChatImpl::MatchJoin(const char *pszMatchName)
+bool MatchVoiceChatImpl::MatchJoin(const char *pszMatchName, const char *pszMatchToken)
 {
     if (!InternalInitialize()) {
         LOG_ERR("%s: InternalInitialize() failed", __FUNCTION__);
         return false;
     }
-    SendCommand(new CommandJoin(pszMatchName));
+    SendCommand(new CommandJoin(pszMatchName, pszMatchToken));
+    return true;
+}
+
+bool MatchVoiceChatImpl::SetLoginCredentials(const char *pszUserId, const char *pszUserToken)
+{
+    CHECK(!m_sIssuer.empty());
+
+    if (!InternalInitialize()) {
+        LOG_ERR("%s: InternalInitialize() failed", __FUNCTION__);
+        return false;
+    }
+    m_sUserID = "." + m_sIssuer + "." + std::string(pszUserId) + ".";
+    m_sUserToken = pszUserToken;
     return true;
 }
 
@@ -282,25 +294,6 @@ void MatchVoiceChatImpl::HandleCommands()
     } while (true);
 }
 
-std::string MatchVoiceChatImpl::GetCredentials(const char *vxa, const char *sub, const char *from_uri, const char *to_uri)
-{
-    time_t exp = time(NULL) + 600;
-    static unsigned long long serial;
-    char *tokbuf = vx_debug_generate_token(
-            m_sIssuer.c_str(),
-            exp,
-            vxa,
-            ++serial,
-            sub,
-            from_uri,
-            to_uri,
-            (unsigned char *)m_sKey.c_str(),
-            m_sKey.size());
-    std::string token(tokbuf);
-    vx_free(tokbuf);
-    return token;
-}
-
 void MatchVoiceChatImpl::OnCommandConnect(CommandConnect &cmd)
 {
     {
@@ -308,7 +301,6 @@ void MatchVoiceChatImpl::OnCommandConnect(CommandConnect &cmd)
 
         m_sDesiredVivoxServerURL = cmd.m_sVivoxServer;
         m_sIssuer = cmd.m_sIssuer;
-        m_sKey = cmd.m_sKey;
         m_sRealm = cmd.m_sRealm;
 
         bool bSameVivoxServer = (m_sVivoxServerURL == m_sDesiredVivoxServerURL);
@@ -333,6 +325,7 @@ void MatchVoiceChatImpl::OnCommandJoin(CommandJoin &cmd)
         return;
     }
 
+    m_sMatchToken = cmd.m_sMatchToken;
     m_sDesiredMatchName = cmd.m_sMatchName;
     bool bSameMatch = (m_sDesiredMatchName == m_sMatchName);
 
@@ -856,6 +849,7 @@ void MatchVoiceChatImpl::Login()
 {
     CHECK(m_state == MatchVoiceChat::stateConnected || m_state == MatchVoiceChat::stateLoginRetry);
     CHECK(m_pConnection);
+    CHECK(m_sUserID && m_sUserToken);
 
     LOG_INFO("Logging in ...");
 
@@ -863,8 +857,7 @@ void MatchVoiceChatImpl::Login()
 
     AccountName account(m_sUserID.c_str());
 
-    std::string userUri = "sip:" + m_sUserID + "@" + m_sRealm;
-    std::string token = GetCredentials("login", NULL, userUri.c_str(), NULL);
+    std::string token = m_sUserToken;
 
     VCSStatus status = m_pConnection->Login(account, token.c_str());
     if (status != 0) {
@@ -877,6 +870,7 @@ void MatchVoiceChatImpl::Logout()
 {
     CHECK(m_state == MatchVoiceChat::stateLoggedIn);
     CHECK(m_pConnection);
+    CHECK(m_sUserID);
 
     LOG_INFO("Logging out ...");
 
@@ -896,14 +890,14 @@ void MatchVoiceChatImpl::Join()
     CHECK(m_state == MatchVoiceChat::stateHaveChannelID || m_state == MatchVoiceChat::stateJoinChannelRetry);
     CHECK(m_pConnection);
     CHECK(!m_sMatchChannelURI.empty());
+    CHECK(m_sUserID && m_sMatchToken);
 
     SetState(MatchVoiceChat::stateJoiningChannel);
 
     AccountName account(m_sUserID.c_str());
     Uri channel(m_sMatchChannelURI.c_str());
 
-    std::string userUri = "sip:" + m_sUserID + "@" + m_sRealm;
-    std::string token = GetCredentials("join", NULL, userUri.c_str(), m_sMatchChannelURI.c_str());
+    std::string token = m_sMatchToken;
     VCSStatus status = m_pConnection->JoinChannel(account, channel, token.c_str());
 
     if (status != 0) {
@@ -917,6 +911,7 @@ void MatchVoiceChatImpl::Leave()
     CHECK(m_state == MatchVoiceChat::stateInMatch);
     CHECK(m_pConnection);
     CHECK(!m_sMatchChannelURI.empty());
+    CHECK(m_sUserID);
 
     LOG_INFO("Leaving channel ...");
 

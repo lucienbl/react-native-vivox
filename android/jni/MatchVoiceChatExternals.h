@@ -29,10 +29,11 @@ JavaVM *vivox_mvc_getVM();
 
 void vivox_mvc_destroy();
 
-int vivox_mvc_serverConnect(const char *pszVivoxServer, const char *pszIssuer, const char *pszKey, const char *pszRealm);
+int vivox_mvc_serverConnect(const char *pszVivoxServer, const char *pszIssuer, const char *pszRealm);
 int vivox_mvc_serverDisconnect();
 
-int vivox_mvc_matchJoin(const char *pszMatchName);
+int vivox_mvc_matchJoin(const char *pszMatchName, const char *pszMatchToken);
+int vivox_mvc_setLoginCredentials(const char *pszUserId, const char *pszUserToken);
 int vivox_mvc_matchLeave();
 
 int vivox_mvc_getState();

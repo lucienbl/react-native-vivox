@@ -54,23 +54,18 @@ JNIEXPORT void JNI_OnUnload(JavaVM *, void *)
 }
 
 
-JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_serverConnect(JNIEnv *jenv, jobject /* obj */, jstring vivoxServer, jstring issuer, jstring key, jstring realm)
+JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_serverConnect(JNIEnv *jenv, jobject /* obj */, jstring vivoxServer, jstring issuer, jstring realm)
 {
     const char *pszVivoxServer = (const char *)jenv->GetStringUTFChars(vivoxServer, 0);
     const char *pszIssuer = (const char *)jenv->GetStringUTFChars(issuer, 0);
-    const char *pszKey = (const char *)jenv->GetStringUTFChars(key, 0);
     const char *pszRealm = (const char *)jenv->GetStringUTFChars(realm, 0);
 
     LOG_INFO("%s: calling ServerConnect()...", __FUNCTION__);
-    bool bResult = vivox_mvc_serverConnect(pszVivoxServer, pszIssuer, pszKey, pszRealm) ? false : true;
+    bool bResult = vivox_mvc_serverConnect(pszVivoxServer, pszIssuer, pszRealm) ? false : true;
 
     if (NULL != pszRealm) {
         jenv->ReleaseStringUTFChars(realm, pszRealm);
         pszRealm = NULL;
-    }
-    if (NULL != pszKey) {
-        jenv->ReleaseStringUTFChars(key, pszKey);
-        pszKey = NULL;
     }
     if (NULL != pszIssuer) {
         jenv->ReleaseStringUTFChars(issuer, pszIssuer);
@@ -89,15 +84,41 @@ JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_serverDisco
     return vivox_mvc_serverDisconnect() ? false : true;
 }
 
-JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_matchJoin(JNIEnv *jenv, jobject /* obj */, jstring matchName)
+JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_matchJoin(JNIEnv *jenv, jobject /* obj */, jstring matchName, jstring matchToken)
 {
     const char *pszMatchName  = (const char *)jenv->GetStringUTFChars(matchName,  0);
+    const char *pszMatchToken  = (const char *)jenv->GetStringUTFChars(matchToken,  0);
 
-    bool bResult = vivox_mvc_matchJoin(pszMatchName) ? false : true;
+    bool bResult = vivox_mvc_matchJoin(pszMatchName, pszMatchToken) ? false : true;
 
     if (NULL != pszMatchName) {
         jenv->ReleaseStringUTFChars(matchName, pszMatchName);
         pszMatchName = NULL;
+    }
+
+    if (NULL != pszMatchToken) {
+        jenv->ReleaseStringUTFChars(matchToken, pszMatchToken);
+        pszMatchToken = NULL;
+    }
+
+    return bResult;
+}
+
+JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_setLoginCredentials(JNIEnv *jenv, jobject /* obj */, jstring userId, jstring userToken)
+{
+    const char *pszUserId  = (const char *)jenv->GetStringUTFChars(userId,  0);
+    const char *pszUserToken  = (const char *)jenv->GetStringUTFChars(userToken,  0);
+
+    bool bResult = vivox_mvc_setLoginCredentials(pszUserId, pszUserToken) ? false : true;
+
+    if (NULL != pszUserId) {
+        jenv->ReleaseStringUTFChars(userId, pszUserId);
+        pszUserId = NULL;
+    }
+
+    if (NULL != pszUserToken) {
+        jenv->ReleaseStringUTFChars(userToken, pszUserToken);
+        pszUserToken = NULL;
     }
 
     return bResult;

@@ -31,14 +31,19 @@ MatchVoiceChat::~MatchVoiceChat()
     m_pImpl = NULL;
 }
 
-bool MatchVoiceChat::ServerConnect(const char *pszVivoxServer, const char *pszIssuer, const char *pszKey, const char *pszRealm)
+bool MatchVoiceChat::ServerConnect(const char *pszVivoxServer, const char *pszIssuer, const char *pszRealm)
 {
-    return m_pImpl->ServerConnect(pszVivoxServer, pszIssuer, pszKey, pszRealm);
+    return m_pImpl->ServerConnect(pszVivoxServer, pszIssuer, pszRealm);
 }
 
-bool MatchVoiceChat::MatchJoin(const char *pszMatchName)
+bool MatchVoiceChat::MatchJoin(const char *pszMatchName, const char *pszMatchToken)
 {
-    return m_pImpl->MatchJoin(pszMatchName);
+    return m_pImpl->MatchJoin(pszMatchName, pszMatchToken);
+}
+
+bool MatchVoiceChat::SetLoginCredentials(const char *pszUserId, const char *pszUserToken)
+{
+    return m_pImpl->SetLoginCredentials(pszUserId, pszUserToken);
 }
 
 bool MatchVoiceChat::MatchLeave()
