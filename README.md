@@ -44,12 +44,13 @@ public void onCreate() {
 This example will connect your app to your Vivox server and join the `test123` voice channel. Make sure you requested microphone permission before!
 ```javascript
 import React from 'react';
-import Vivox from 'react-native-vivox';
+import * as Vivox from 'react-native-vivox';
 
 class App extends React.Component {
   async componentDidMount(): void {
-    await Vivox.connect("https://vdx5.www.vivox.com/api2/", "issuer", "key", "vdx5.vivox.com");
-    await Vivox.joinMatch("test123");
+    await Vivox.connect("https://vdx5.www.vivox.com/api2/", "issuer", "vdx5.vivox.com");
+    await Vivox.login("userId", "loginToken");
+    await Vivox.joinChannel("test123", "joinToken");
   }
 
   render() {
@@ -62,5 +63,35 @@ export default App;
 ```
 ### Connect to the Vivox server
 ```javascript
-Vivox.connect("server", "issuer", "key", "realm"); // returns Promise<>
+Vivox.connect("server", "issuer", "realm"); // returns Promise<>
+```
+
+### Login the user
+```javascript
+Vivox.login("userId", "loginToken"); // returns Promise<>
+```
+
+### Join a channel
+```javascript
+Vivox.joinChannel("channelId", "joinToken"); // returns Promise<>
+```
+
+### Leave current channel
+```javascript
+Vivox.leaveChannel(); // returns Promise<>
+```
+
+### Disconnect from the Vivox server
+```javascript
+Vivox.disconnect(); // returns Promise<>
+```
+
+### Retrieve the current state int
+```javascript
+Vivox.getState(); // returns Promise<number>
+```
+
+### Retrieve the current state name
+```javascript
+Vivox.getStateName(); // returns Promise<string>
 ```
