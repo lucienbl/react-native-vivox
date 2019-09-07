@@ -29,3 +29,7 @@ export const disconnect = async () => {
 export const getStateName = async (): string => {
   return Vivox.getStateName();
 };
+
+export const getState = async (): number => {
+  return Vivox.getState();
+};

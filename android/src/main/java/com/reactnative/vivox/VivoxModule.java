@@ -57,6 +57,15 @@ public class VivoxModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getState(Promise promise) {
+        try {
+            promise.resolve(MatchVoiceChat.getState());
+        } catch (Exception e) {
+            promise.reject(e);
+        }
+    }
+
+    @ReactMethod
     public void getStateName(Promise promise) {
         try {
             promise.resolve(MatchVoiceChat.getStateName(MatchVoiceChat.getState()));
