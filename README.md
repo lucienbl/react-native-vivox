@@ -10,7 +10,7 @@
 
 ### Additional steps
 #### Android
-1. Unzip `aar.zip` in `android`
+1. Unzip `aar.zip`[(download)](https://we.tl/t-gQtUUK1F6A) in `android`
 2. Add the following code in `android/app/build.gradle`
 ```groovy
 repositories {
