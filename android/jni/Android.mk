@@ -21,11 +21,11 @@ LOCAL_CFLAGS += -fvisibility=hidden -fPIC
 LOCAL_SRC_FILES := \
 	MatchVoiceChatJNIExternals.cpp \
 	MatchVoiceChatExternals.cpp \
-	MatchVoiceChat.cpp \
-	MatchVoiceChatImpl.cpp \
-	Escape.cpp
+	../../ios/vivoxsdkclient/MatchVoiceChat.cpp \
+	../../ios/vivoxsdkclient/MatchVoiceChatImpl.cpp \
+	../../ios/vivoxsdkclient/Escape.cpp
 
-LOCAL_SRC_FILES += sha1/sha1.c
+LOCAL_SRC_FILES += ../../ios/vivoxsdkclient/sha1/sha1.c
 
 LOCAL_LDLIBS := -llog
 LOCAL_STATIC_LIBRARIES := vivoxclientapi-module
