@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		B3E7B58A1CC2AC0600A0062D /* Vivox.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Vivox.m */; };
-		DF4FE6F5232D0BB900F8A576 /* MatchVoiceChat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DF4FE6EE232D0BB800F8A576 /* MatchVoiceChat.cpp */; };
-		DF4FE6F6232D0BB900F8A576 /* MatchVoiceChatImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DF4FE6EF232D0BB900F8A576 /* MatchVoiceChatImpl.cpp */; };
-		DF4FE6F7232D0BB900F8A576 /* Escape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DF4FE6F4232D0BB900F8A576 /* Escape.cpp */; };
 		DF6FC28823252DEF0037960D /* CppWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = DFFD186523251515006F9D0A /* CppWrapper.mm */; };
 /* End PBXBuildFile section */
 
@@ -30,14 +27,6 @@
 		134814201AA4EA6300B7C361 /* libVivox.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libVivox.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3E7B5881CC2AC0600A0062D /* Vivox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vivox.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* Vivox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Vivox.m; sourceTree = "<group>"; };
-		DF4FE6EE232D0BB800F8A576 /* MatchVoiceChat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MatchVoiceChat.cpp; sourceTree = "<group>"; };
-		DF4FE6EF232D0BB900F8A576 /* MatchVoiceChatImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MatchVoiceChatImpl.cpp; sourceTree = "<group>"; };
-		DF4FE6F0232D0BB900F8A576 /* MatchVoiceChat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatchVoiceChat.h; sourceTree = "<group>"; };
-		DF4FE6F1232D0BB900F8A576 /* MatchVoiceChatImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatchVoiceChatImpl.h; sourceTree = "<group>"; };
-		DF4FE6F2232D0BB900F8A576 /* sha1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sha1; sourceTree = "<group>"; };
-		DF4FE6F3232D0BB900F8A576 /* Escape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Escape.h; sourceTree = "<group>"; };
-		DF4FE6F4232D0BB900F8A576 /* Escape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Escape.cpp; sourceTree = "<group>"; };
-		DF4FE6F8232D0D3700F8A576 /* vivoxclientapi */ = {isa = PBXFileReference; lastKnownFileType = folder; path = vivoxclientapi; sourceTree = "<group>"; };
 		DF6FC28D232530FC0037960D /* core */ = {isa = PBXFileReference; lastKnownFileType = folder; path = core; sourceTree = "<group>"; };
 		DFFD186523251515006F9D0A /* CppWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CppWrapper.mm; sourceTree = "<group>"; };
 		DFFD186723251528006F9D0A /* CppWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CppWrapper.h; sourceTree = "<group>"; };
@@ -65,7 +54,6 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				DF4FE6D9232D04E400F8A576 /* vivoxclientsdk */,
 				DF6FC28D232530FC0037960D /* core */,
 				DFFD186723251528006F9D0A /* CppWrapper.h */,
 				DFFD186523251515006F9D0A /* CppWrapper.mm */,
@@ -73,21 +61,6 @@
 				B3E7B5891CC2AC0600A0062D /* Vivox.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		DF4FE6D9232D04E400F8A576 /* vivoxclientsdk */ = {
-			isa = PBXGroup;
-			children = (
-				DF4FE6F8232D0D3700F8A576 /* vivoxclientapi */,
-				DF4FE6F4232D0BB900F8A576 /* Escape.cpp */,
-				DF4FE6F3232D0BB900F8A576 /* Escape.h */,
-				DF4FE6EE232D0BB800F8A576 /* MatchVoiceChat.cpp */,
-				DF4FE6F0232D0BB900F8A576 /* MatchVoiceChat.h */,
-				DF4FE6EF232D0BB900F8A576 /* MatchVoiceChatImpl.cpp */,
-				DF4FE6F1232D0BB900F8A576 /* MatchVoiceChatImpl.h */,
-				DF4FE6F2232D0BB900F8A576 /* sha1 */,
-			);
-			path = vivoxclientsdk;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,10 +120,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DF4FE6F6232D0BB900F8A576 /* MatchVoiceChatImpl.cpp in Sources */,
-				DF4FE6F5232D0BB900F8A576 /* MatchVoiceChat.cpp in Sources */,
 				B3E7B58A1CC2AC0600A0062D /* Vivox.m in Sources */,
-				DF4FE6F7232D0BB900F8A576 /* Escape.cpp in Sources */,
 				DF6FC28823252DEF0037960D /* CppWrapper.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

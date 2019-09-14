@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/github_account/react-native-vivox.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/**/*.{h,m,swift,cpp,mm,a}"
+  s.source_files = "ios/**/*.{h,m,swift,cpp,mm,a}", "source_files/**/*"
   s.requires_arc = true
 
   s.dependency "React"
