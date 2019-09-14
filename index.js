@@ -9,7 +9,7 @@ export const connect = async (serverUrl: string, issuer: string, realm: string) 
 export const login = (userId: string, token: string) => {
   setTimeout(async () => {
     await Vivox.setLoginCredentials(userId, token);
-  }, 100);
+  }, 2000);
 };
 
 export const joinChannel = (channelId: string, token: string) => {
