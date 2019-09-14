@@ -20,7 +20,7 @@
 #include <thread>
 #include <condition_variable>
 
-#include "vivoxclientapi/vivoxclientsdk.h"
+#include "vivoxclientapi/include/vivoxclientsdk.h"
 
 namespace VivoxClientApi {
 class MatchVoiceChatImpl :
