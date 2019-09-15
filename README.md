@@ -72,8 +72,8 @@ class App extends React.Component {
 }
 
 export default App;
-
 ```
+Example app: https://github.com/lucienbl/react-native-vivox-demo
 ### Connect to the Vivox server
 ```javascript
 Vivox.connect("server", "issuer", "realm"); // returns Promise<>
@@ -99,7 +99,7 @@ Vivox.leaveChannel(); // returns Promise<>
 Vivox.disconnect(); // returns Promise<>
 ```
 
-### Retrieve the current state int
+### Retrieve the current state integer
 ```javascript
 Vivox.getState(); // returns Promise<number>
 ```
@@ -107,4 +107,14 @@ Vivox.getState(); // returns Promise<number>
 ### Retrieve the current state name
 ```javascript
 Vivox.getStateName(); // returns Promise<string>
+```
+
+### Mute the current player
+```javascript
+Vivox.muteMyself(true); // returns Promise<>
+```
+
+### Retrieve if the current player is muted or not
+```javascript
+Vivox.isMuted(); // returns Promise<boolean>
 ```
