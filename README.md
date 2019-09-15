@@ -38,6 +38,19 @@ public void onCreate() {
 }
 ```
 
+#### iOS
+1. Add (link) `libvivoxsdk.a` (from `/react-native-vivox/ios/core/bin/${CONFIGURATION}/libvivoxsdk.a`) into Frameworks
+2. Add (link) `libresolv.tbd` [(download)](https://we.tl/t-mEIWcVv26j) into Frameworks
+3. Add the following to your App's `Info.plist`
+```xml
+<key>NSMicrophoneUsageDescription</key>
+<string>Need microphone access to communicate with other players</string>
+<key>UIBackgroundModes</key>
+<array>
+  <string>audio</string>
+  <string>voip</string>
+</array>
+```
 
 ## Usage
 ### Example
