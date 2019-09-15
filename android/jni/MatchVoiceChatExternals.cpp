@@ -26,7 +26,7 @@
 
 # include "VxcJNI.h"
 # include "MatchVoiceChatExternals.h"
-# include "MatchVoiceChat.h"
+# include "../../source_files/MatchVoiceChat.h"
 
 # ifdef __ANDROID__
 #   include <android/log.h>

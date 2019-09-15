@@ -23,7 +23,7 @@
 #   include <signal.h>
 # endif
 
-# include "MatchVoiceChat.h"
+# include "../../source_files/MatchVoiceChat.h"
 # include "MatchVoiceChatExternals.h"
 
 # ifdef __ANDROID__

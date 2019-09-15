@@ -16,7 +16,7 @@
 # include <jni.h>
 
 # ifdef __cplusplus
-# include "MatchVoiceChat.h"
+# include "../../source_files/MatchVoiceChat.h"
 
 typedef void (*FTMatchVoiceChatCallback)(VivoxClientApi::MatchVoiceChat *pMVC);
 
