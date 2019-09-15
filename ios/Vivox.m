@@ -33,23 +33,13 @@ RCT_EXPORT_METHOD(leaveMatch) {
 RCT_REMAP_METHOD(getState, getStateResolver:(RCTPromiseResolveBlock)resolve
 rejecter:(RCTPromiseRejectBlock)reject) {
     int state = [cppWrapper getState];
-    if (state) {
-        resolve([NSNumber numberWithInt:state]);
-    } else {
-        NSError *error = NULL;
-        reject(@"no_state", @"No state available", error);
-    }
+    resolve([NSNumber numberWithInt:state]);
 }
                   
 RCT_REMAP_METHOD(getStateName, getStateNameResolver:(RCTPromiseResolveBlock)resolve
 rejecter:(RCTPromiseRejectBlock)reject) {
     const char * state = [cppWrapper getStateName];
-    if (state) {
-        resolve([NSString stringWithUTF8String:state]);
-    } else {
-        NSError *error = NULL;
-        reject(@"no_state", @"No state available", error);
-    }
+    resolve([NSString stringWithUTF8String:state]);
 }
 
 @end
