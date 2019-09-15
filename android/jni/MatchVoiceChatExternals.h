@@ -35,6 +35,7 @@ int vivox_mvc_serverDisconnect();
 int vivox_mvc_matchJoin(const char *pszMatchName, const char *pszMatchToken);
 int vivox_mvc_setLoginCredentials(const char *pszUserId, const char *pszUserToken);
 int vivox_mvc_muteMyself(bool *value);
+int vivox_mvc_isMuted();
 int vivox_mvc_matchLeave();
 
 int vivox_mvc_getState();

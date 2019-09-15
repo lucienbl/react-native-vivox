@@ -37,3 +37,7 @@ export const getState = async (): number => {
 export const muteMyself = async (value: boolean): void => {
   return Vivox.muteMyself(value);
 };
+
+export const isMuted = async (): boolean => {
+  return Vivox.isMuted();
+};

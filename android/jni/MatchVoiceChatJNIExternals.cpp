@@ -137,6 +137,11 @@ JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_muteMyself(
     return bResult;
 }
 
+JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_isMuted(JNIEnv *jenv, jobject /* obj */)
+{
+    return vivox_mvc_isMuted() != 0;
+}
+
 JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_matchLeave(JNIEnv * /* jenv */, jobject /* obj */)
 {
     return vivox_mvc_matchLeave() ? false : true;

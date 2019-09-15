@@ -10,5 +10,6 @@
 - (const char *) getStateName;
 - (int) getState;
 - (void) muteMyself:(BOOL *)value;
+- (BOOL) isMuted;
 
 @end

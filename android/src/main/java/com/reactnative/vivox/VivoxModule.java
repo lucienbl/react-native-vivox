@@ -91,4 +91,13 @@ public class VivoxModule extends ReactContextBaseJavaModule {
             promise.reject(e);
         }
     }
+
+    @ReactMethod
+    public void isMuted(Promise promise) {
+        try {
+            promise.resolve(MatchVoiceChat.isMuted());
+        } catch (Exception e) {
+            promise.reject(e);
+        }
+    }
 }

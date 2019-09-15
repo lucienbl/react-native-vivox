@@ -933,9 +933,14 @@ bool MatchVoiceChatImpl::MuteMyself(bool *value)
     LOG_INFO(value ? "Disabling audio input..." : "Enabling audio input...");
 
     m_pConnection->SetAudioInputDeviceMuted(value);
-    m_pConnection.
 
     return true;
+}
+
+bool MatchVoiceChatImpl::IsMuted()
+{
+    CHECK(m_pConnection);
+    return m_pConnection->GetAudioInputDeviceMuted();
 }
 
 void MatchVoiceChatImpl::InvokeOnUIThread(void(pf_func)(void *arg0), void *arg0)

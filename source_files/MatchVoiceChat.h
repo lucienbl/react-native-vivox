@@ -36,6 +36,7 @@ public:
     bool MatchLeave();
     bool ServerDisconnect();
     bool MuteMyself(bool *value);
+    bool IsMuted();
 
     // State
 

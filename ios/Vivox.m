@@ -46,4 +46,9 @@ rejecter:(RCTPromiseRejectBlock)reject) {
     resolve([NSString stringWithUTF8String:state]);
 }
 
+RCT_REMAP_METHOD(isMuted, isMutedResolver:(RCTPromiseResolveBlock)resolve
+rejecter:(RCTPromiseRejectBlock)reject) {
+    resolve([NSNumber numberWithBool:[cppWrapper isMuted]]);
+}
+
 @end

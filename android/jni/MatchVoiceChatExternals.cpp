@@ -105,6 +105,10 @@ JNIEXPORT int JNICALL vivox_mvc_muteMyself(bool *value)
     return getMVC()->MuteMyself(value) ? 0 : 1;
 }
 
+JNIEXPORT int JNICALL vivox_mvc_isMuted()
+{
+    return getMVC()->IsMuted() ? 1 : 0;
+}
 
 JNIEXPORT int JNICALL vivox_mvc_matchLeave()
 {

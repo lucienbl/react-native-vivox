@@ -57,4 +57,8 @@
     matchVoiceChat.MuteMyself(mute);
 }
 
+- (BOOL) isMuted {
+    return matchVoiceChat.IsMuted();
+}
+
 @end

@@ -52,6 +52,11 @@ bool MatchVoiceChat::MuteMyself(bool *value)
     return m_pImpl->MuteMyself(value);
 }
 
+bool MatchVoiceChat::IsMuted()
+{
+    return m_pImpl->IsMuted();
+}
+
 bool MatchVoiceChat::MatchLeave()
 {
     return m_pImpl->MatchLeave();
