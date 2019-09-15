@@ -241,7 +241,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
 					"$(SRCROOT)/core/bin/$(CONFIGURATION)/**",
-					"$(PROJECT_DIR)/core/bin/Debug",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Vivox;
@@ -263,7 +262,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
 					"$(SRCROOT)/core/bin/$(CONFIGURATION)/**",
-					"$(PROJECT_DIR)/core/bin/Debug",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Vivox;
