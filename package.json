@@ -1,7 +1,7 @@
 {
   "name": "react-native-vivox",
   "title": "React Native Vivox",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "TODO",
   "main": "index.js",
   "scripts": {
@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/github_account/react-native-vivox.git",
-    "baseUrl": "https://github.com/github_account/react-native-vivox"
+    "url": "git+https://github.com/lucienbl/react-native-vivox.git",
+    "baseUrl": "https://github.com/lucienbl/react-native-vivox"
   },
   "keywords": [
     "react-native"
   ],
   "author": {
-    "name": "Your Name",
-    "email": "yourname@email.com"
+    "name": "Lucien Blunk-Lallet",
+    "email": "lucien.blunk.lallet@gmail.com"
   },
   "license": "MIT",
   "licenseFilename": "LICENSE",
