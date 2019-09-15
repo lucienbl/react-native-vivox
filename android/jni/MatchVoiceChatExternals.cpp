@@ -100,6 +100,12 @@ JNIEXPORT int JNICALL vivox_mvc_setLoginCredentials(const char *pszUserId, const
     return getMVC()->SetLoginCredentials(pszUserId, pszUserToken) ? 0 : 1;
 }
 
+JNIEXPORT int JNICALL vivox_mvc_muteMyself(bool *value)
+{
+    return getMVC()->MuteMyself(value) ? 0 : 1;
+}
+
+
 JNIEXPORT int JNICALL vivox_mvc_matchLeave()
 {
     return getMVC()->MatchLeave() ? 0 : 1;

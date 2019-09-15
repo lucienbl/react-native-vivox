@@ -29,6 +29,10 @@ RCT_EXPORT_METHOD(disconnect) {
 RCT_EXPORT_METHOD(leaveMatch) {
     [cppWrapper leaveMatch];
 }
+
+RCT_EXPORT_METHOD(muteMyself:(BOOL *)value) {
+    [cppWrapper muteMyself:value];
+}
                   
 RCT_REMAP_METHOD(getState, getStateResolver:(RCTPromiseResolveBlock)resolve
 rejecter:(RCTPromiseRejectBlock)reject) {

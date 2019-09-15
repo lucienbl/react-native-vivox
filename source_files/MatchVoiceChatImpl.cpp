@@ -62,12 +62,12 @@ using namespace VivoxClientApi;
 #include "Escape.h"
 
 MatchVoiceChatImpl::MatchVoiceChatImpl(MatchVoiceChat *pMVC) :
-    m_pConnection(NULL),
-    m_state(MatchVoiceChat::stateUninitialized),
-    m_pCallback(NULL),
-    m_pMVC(pMVC),
-    m_bStopping(false),
-    m_dblNextEventTime(0)
+        m_pConnection(NULL),
+        m_state(MatchVoiceChat::stateUninitialized),
+        m_pCallback(NULL),
+        m_pMVC(pMVC),
+        m_bStopping(false),
+        m_dblNextEventTime(0)
 {
     CHECK(pMVC);
     InternalInitialize();
@@ -767,9 +767,9 @@ void MatchVoiceChatImpl::Initialize()
 
     LogLevel logLevel =
 #ifdef _DEBUG
-        LogLevelDebug
+            LogLevelDebug
 #else
-        LogLevelNone
+            LogLevelNone
 #endif
     ;
 
@@ -925,6 +925,19 @@ void MatchVoiceChatImpl::Leave()
     }
 }
 
+bool MatchVoiceChatImpl::MuteMyself(bool *value)
+{
+    CHECK(m_state == MatchVoiceChat::stateInMatch);
+    CHECK(m_pConnection);
+
+    LOG_INFO(value ? "Disabling audio input..." : "Enabling audio input...");
+
+    m_pConnection->SetAudioInputDeviceMuted(value);
+    m_pConnection.
+
+    return true;
+}
+
 void MatchVoiceChatImpl::InvokeOnUIThread(void(pf_func)(void *arg0), void *arg0)
 {
     SendCommand(new CommandCallDelegate(pf_func, arg0));
@@ -960,7 +973,7 @@ void MatchVoiceChatImpl::onLogStatementEmitted(
         long long nativeMillisecondsSinceEpoch,
         long threadId,
         const char *logMessage
-        )
+)
 {
 # ifdef __ANDROID__
     __android_log_print(LogLevel2AndroidLogPrio(level), "vivoxclientapi", "%5ld [%lld] %s", threadId, nativeMillisecondsSinceEpoch, logMessage);
@@ -976,7 +989,7 @@ void MatchVoiceChatImpl::onAssert(
         const char *filename,
         int line,
         const char *message
-        )
+)
 {
 # ifdef __ANDROID__
     __android_log_print(ANDROID_LOG_FATAL, "vivoxclientapi", "ASSERTION FAILED at %s:%d: %s", filename, line, message);
@@ -1025,12 +1038,12 @@ void MatchVoiceChatImpl::onDisconnected(const Uri &server, VCSStatus status)
     TimerStop();
 
     if (
-        m_state != MatchVoiceChat::stateUninitialized &&
-        m_state != MatchVoiceChat::stateThreadStarted &&
-        m_state != MatchVoiceChat::stateSDKInitializing &&
-        m_state != MatchVoiceChat::stateSDKInitFailed &&
-        m_state != MatchVoiceChat::stateSDKInitialized &&
-        m_state != MatchVoiceChat::stateSDKUninitializing)
+            m_state != MatchVoiceChat::stateUninitialized &&
+            m_state != MatchVoiceChat::stateThreadStarted &&
+            m_state != MatchVoiceChat::stateSDKInitializing &&
+            m_state != MatchVoiceChat::stateSDKInitFailed &&
+            m_state != MatchVoiceChat::stateSDKInitialized &&
+            m_state != MatchVoiceChat::stateSDKUninitializing)
     {
         SetState(MatchVoiceChat::stateSDKInitialized);
     } else {

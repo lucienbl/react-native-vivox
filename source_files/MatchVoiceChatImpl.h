@@ -38,6 +38,7 @@ public:
     bool SetLoginCredentials(const char *pszUserId, const char *pszUserToken);
     bool MatchLeave();
     bool ServerDisconnect();
+    bool MuteMyself(bool *value);
 
     // State
 

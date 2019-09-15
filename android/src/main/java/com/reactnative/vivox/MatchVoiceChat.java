@@ -16,4 +16,6 @@ public class MatchVoiceChat {
     public static native String getStateName(int state);
 
     public static native void setCallback(Class<?> theClass, String staticMethod);
+
+    public static native boolean muteMyself(boolean value);
 }

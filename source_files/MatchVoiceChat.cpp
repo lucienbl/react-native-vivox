@@ -47,6 +47,11 @@ bool MatchVoiceChat::SetLoginCredentials(const char *pszUserId, const char *pszU
     return m_pImpl->SetLoginCredentials(pszUserId, pszUserToken);
 }
 
+bool MatchVoiceChat::MuteMyself(bool *value)
+{
+    return m_pImpl->MuteMyself(value);
+}
+
 bool MatchVoiceChat::MatchLeave()
 {
     return m_pImpl->MatchLeave();

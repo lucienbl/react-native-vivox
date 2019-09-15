@@ -33,3 +33,7 @@ export const getStateName = async (): string => {
 export const getState = async (): number => {
   return Vivox.getState();
 };
+
+export const muteMyself = async (value: boolean): void => {
+  return Vivox.muteMyself(value);
+};

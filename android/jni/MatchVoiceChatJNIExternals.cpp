@@ -124,6 +124,19 @@ JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_setLoginCre
     return bResult;
 }
 
+JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_muteMyself(JNIEnv *jenv, jobject /* obj */, jboolean value)
+{
+    bool *pszValue = (bool *)(value == JNI_TRUE);
+
+    bool bResult = vivox_mvc_muteMyself(pszValue) ? false : true;
+
+    if (NULL != pszValue) {
+        pszValue = NULL;
+    }
+
+    return bResult;
+}
+
 JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_matchLeave(JNIEnv * /* jenv */, jobject /* obj */)
 {
     return vivox_mvc_matchLeave() ? false : true;

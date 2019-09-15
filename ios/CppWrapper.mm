@@ -52,4 +52,9 @@
     return matchVoiceChat.GetState();
 }
 
+- (void) muteMyself:(BOOL *)value {
+    bool* mute = (bool *) (value == (BOOL *)YES);
+    matchVoiceChat.MuteMyself(mute);
+}
+
 @end

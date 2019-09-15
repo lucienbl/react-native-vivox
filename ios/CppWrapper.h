@@ -9,5 +9,6 @@
 - (void) leaveMatch;
 - (const char *) getStateName;
 - (int) getState;
+- (void) muteMyself:(BOOL *)value;
 
 @end
