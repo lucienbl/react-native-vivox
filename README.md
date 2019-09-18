@@ -118,3 +118,8 @@ Vivox.muteMyself(true); // returns Promise<>
 ```javascript
 Vivox.isMuted(); // returns Promise<boolean>
 ```
+
+### Retrieve the currently speaking players
+```javascript
+Vivox.getSpeakingParticipants(); // returns Promise<Object>
+```
