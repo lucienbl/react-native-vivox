@@ -83,3 +83,11 @@ export const muteMyself = async (value: boolean): void => {
 export const isMuted = async (): boolean => {
   return Vivox.isMuted();
 };
+
+/**
+ * Retrieve the currently speaking players.
+ * @returns {Promise<Object>}
+ */
+export const getSpeakingParticipants = async ():Object => {
+  return Vivox.getSpeakingParticipants();
+} ;
