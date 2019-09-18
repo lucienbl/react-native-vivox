@@ -937,6 +937,11 @@ bool MatchVoiceChatImpl::MuteMyself(bool *value)
     return true;
 }
 
+std::map<std::string, bool> MatchVoiceChatImpl::GetSpeakingParticipants()
+{
+    return m_sSpeakingParticipants;
+}
+
 bool MatchVoiceChatImpl::IsMuted()
 {
     CHECK(m_pConnection);
@@ -1093,6 +1098,13 @@ void MatchVoiceChatImpl::onLoginFailed(const AccountName &accountName, VCSStatus
     if (m_state == MatchVoiceChat::stateLoggingIn) {
         SetTimeoutInState(MatchVoiceChat::stateLoginRetry, TIMEOUT_LOGIN_RETRY);
     }
+}
+
+void MatchVoiceChatImpl::onParticipantUpdated(const AccountName &accountName, const Uri &channelUri, const Uri &participantUri, bool isLoggedInUser, bool speaking, double vuMeterEnergy, bool isMutedForAll)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+
+    m_sSpeakingParticipants[participantUri.ToString()] = speaking;
 }
 
 void MatchVoiceChatImpl::onLogoutCompleted(const AccountName &accountName)

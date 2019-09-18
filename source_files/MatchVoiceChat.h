@@ -17,6 +17,7 @@
 #define MatchVoiceChat_h
 
 #include <string>
+#include <map>
 
 namespace VivoxClientApi {
 class MatchVoiceChatImpl;
@@ -37,6 +38,7 @@ public:
     bool ServerDisconnect();
     bool MuteMyself(bool *value);
     bool IsMuted();
+    std::map<std::string, bool> GetSpeakingParticipants();
 
     // State
 

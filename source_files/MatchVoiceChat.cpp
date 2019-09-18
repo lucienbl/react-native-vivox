@@ -57,6 +57,11 @@ bool MatchVoiceChat::IsMuted()
     return m_pImpl->IsMuted();
 }
 
+std::map<std::string, bool> MatchVoiceChat::GetSpeakingParticipants()
+{
+    return m_pImpl->GetSpeakingParticipants();
+}
+
 bool MatchVoiceChat::MatchLeave()
 {
     return m_pImpl->MatchLeave();

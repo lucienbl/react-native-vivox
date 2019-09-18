@@ -40,6 +40,7 @@ public:
     bool ServerDisconnect();
     bool MuteMyself(bool *value);
     bool IsMuted();
+    std::map<std::string, bool> GetSpeakingParticipants();
 
     // State
 
@@ -196,6 +197,8 @@ protected:
     std::string m_sMatchToken;
     std::string m_sMatchChannelURI;
 
+    std::map<std::string, bool> m_sSpeakingParticipants;
+
     std::string m_sIssuer;
     std::string m_sRealm;
 
@@ -254,7 +257,7 @@ public:
     // IClientApiEventHandler callbacks not used by MatchVoiceChat
     virtual void onParticipantAdded(const AccountName & /* accountName */, const Uri & /* channelUri */, const Uri & /* participantUri */, bool /* isLoggedInUser */) {}
     virtual void onParticipantLeft(const AccountName & /* accountName */, const Uri & /* channelUri */, const Uri & /* participantUri */, bool /* isLoggedInUser */, ParticipantLeftReason /* reason */) {}
-    virtual void onParticipantUpdated(const AccountName & /* accountName */, const Uri & /* channelUri */, const Uri & /* participantUri */, bool /* isLoggedInUser */, bool /* speaking */, double /* vuMeterEnergy */, bool /* isMutedForAll */) {}
+    virtual void onParticipantUpdated(const AccountName &accountName, const Uri &channelUri, const Uri &participantUri, bool isLoggedInUser, bool speaking, double vuMeterEnergy, bool isMutedForAll);
     virtual void onParticipantKickedCompleted(const AccountName & /* accountName */, const Uri & /* channelUri */, const Uri & /* participantUri */) {}
     virtual void onParticipantKickFailed(const AccountName & /* accountName */, const Uri & /* channelUri */, const Uri & /* participantUri */, VCSStatus /* status */) {}
     virtual void onStartPlayFileIntoChannels(const AccountName & /* accountName */, const char * /* filename */) {}
