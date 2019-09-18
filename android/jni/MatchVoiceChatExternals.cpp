@@ -110,6 +110,11 @@ JNIEXPORT int JNICALL vivox_mvc_isMuted()
     return getMVC()->IsMuted() ? 1 : 0;
 }
 
+JNIEXPORT std::map<std::string, bool> JNICALL vivox_mvc_getSpeakingParticipants()
+{
+    return getMVC()->GetSpeakingParticipants();
+}
+
 JNIEXPORT int JNICALL vivox_mvc_matchLeave()
 {
     return getMVC()->MatchLeave() ? 0 : 1;

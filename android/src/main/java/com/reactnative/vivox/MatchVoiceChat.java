@@ -1,5 +1,7 @@
 package com.reactnative.vivox;
 
+import java.util.HashMap;
+
 public class MatchVoiceChat {
     public static native boolean serverConnect(String vivoxServer, String issuer, String realm);
 
@@ -20,4 +22,6 @@ public class MatchVoiceChat {
     public static native boolean muteMyself(boolean value);
 
     public static native boolean isMuted();
+
+    public static native HashMap<String, String> getSpeakingParticipants();
 }

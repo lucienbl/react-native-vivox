@@ -36,6 +36,7 @@ int vivox_mvc_matchJoin(const char *pszMatchName, const char *pszMatchToken);
 int vivox_mvc_setLoginCredentials(const char *pszUserId, const char *pszUserToken);
 int vivox_mvc_muteMyself(bool *value);
 int vivox_mvc_isMuted();
+std::map<std::string, bool> vivox_mvc_getSpeakingParticipants();
 int vivox_mvc_matchLeave();
 
 int vivox_mvc_getState();

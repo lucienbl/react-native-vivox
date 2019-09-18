@@ -142,6 +142,32 @@ JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_isMuted(JNI
     return vivox_mvc_isMuted() != 0;
 }
 
+JNIEXPORT jobject JNICALL Java_com_reactnative_vivox_MatchVoiceChat_getSpeakingParticipants(JNIEnv *jenv, jobject /* obj */)
+{
+    std::map<std::string, bool> map = vivox_mvc_getSpeakingParticipants();
+
+    jclass clazz = jenv->FindClass("java/util/HashMap");
+ 	jmethodID init = jenv->GetMethodID(clazz, "<init>", "()V");
+ 	jobject propertyMap = jenv->NewObject(clazz, init);
+ 	jmethodID putMethod = jenv->GetMethodID(
+ 		clazz,
+        "put",
+        "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"
+ 	);
+
+    for( auto it = map.begin(); it != map.end(); ++it ) {
+     	jstring key = (*jenv).NewStringUTF((*it).first.c_str());
+     	jstring value = (*jenv).NewStringUTF((*it).second ? "true" : "false");
+ 		(*jenv).CallObjectMethod(
+ 			propertyMap,
+ 			putMethod,
+ 			key,
+ 			value
+ 		);
+ 	}
+    return propertyMap;
+}
+
 JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_matchLeave(JNIEnv * /* jenv */, jobject /* obj */)
 {
     return vivox_mvc_matchLeave() ? false : true;

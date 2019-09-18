@@ -5,6 +5,11 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class VivoxModule extends ReactContextBaseJavaModule {
 
@@ -96,6 +101,20 @@ public class VivoxModule extends ReactContextBaseJavaModule {
     public void isMuted(Promise promise) {
         try {
             promise.resolve(MatchVoiceChat.isMuted());
+        } catch (Exception e) {
+            promise.reject(e);
+        }
+    }
+
+    @ReactMethod
+    public void getSpeakingParticipants(Promise promise) {
+        try {
+            Map<String, String> speakingParticipants = MatchVoiceChat.getSpeakingParticipants();
+            WritableMap map = new WritableNativeMap();
+            for (Map.Entry<String, String> entry : speakingParticipants.entrySet()) {
+                map.putBoolean(entry.getKey(), entry.getValue().equals("true"));
+            }
+            promise.resolve(map);
         } catch (Exception e) {
             promise.reject(e);
         }
