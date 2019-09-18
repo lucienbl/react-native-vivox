@@ -61,4 +61,13 @@
     return matchVoiceChat.IsMuted();
 }
 
+- (NSDictionary *) getSpeakingParticipants {
+    const std::map<std::string, bool> map = matchVoiceChat.GetSpeakingParticipants();
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    for (auto it = map.begin(); it != map.end(); it++) {
+        [dict setObject:@(it->second) forKey:[NSString stringWithUTF8String:it->first.c_str()]];
+    }
+    return dict;
+}
+
 @end

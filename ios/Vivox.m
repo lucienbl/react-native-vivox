@@ -51,4 +51,9 @@ rejecter:(RCTPromiseRejectBlock)reject) {
     resolve([NSNumber numberWithBool:[cppWrapper isMuted]]);
 }
 
+RCT_REMAP_METHOD(getSpeakingParticipants, getSpeakingParticipantsResolver:(RCTPromiseResolveBlock)resolve
+rejecter:(RCTPromiseRejectBlock)reject) {
+    resolve([cppWrapper getSpeakingParticipants]);
+}
+
 @end
