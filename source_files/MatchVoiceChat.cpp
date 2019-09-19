@@ -62,6 +62,11 @@ std::map<std::string, bool> MatchVoiceChat::GetSpeakingParticipants()
     return m_pImpl->GetSpeakingParticipants();
 }
 
+bool MatchVoiceChat::SetParticipantMutedForMe(const char *targetUserId, bool *muted)
+{
+    return m_pImpl->SetParticipantMutedForMe(targetUserId, muted);
+}
+
 bool MatchVoiceChat::MatchLeave()
 {
     return m_pImpl->MatchLeave();

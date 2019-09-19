@@ -39,6 +39,7 @@ public:
     bool MuteMyself(bool *value);
     bool IsMuted();
     std::map<std::string, bool> GetSpeakingParticipants();
+    bool SetParticipantMutedForMe(const char *targetUserId, bool *muted);
 
     // State
 

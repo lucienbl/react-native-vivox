@@ -937,6 +937,23 @@ bool MatchVoiceChatImpl::MuteMyself(bool *value)
     return true;
 }
 
+bool MatchVoiceChatImpl::SetParticipantMutedForMe(const char *targetUserId, bool *muted)
+{
+    CHECK(m_state == MatchVoiceChat::stateInMatch);
+    CHECK(m_pConnection);
+    CHECK(!m_sMatchChannelURI.empty());
+
+    std::string targetUserURI = "sip:." + m_sIssuer + "." + std::string(targetUserId) + ".@" + m_sRealm;
+
+    AccountName account(m_sUserID.c_str());
+    Uri channel(m_sMatchChannelURI.c_str());
+    Uri targetUser(targetUserURI.c_str());
+    
+    m_pConnection->SetParticipantMutedForMe(account, targetUser, channel, muted);
+
+    return true;
+}
+
 std::map<std::string, bool> MatchVoiceChatImpl::GetSpeakingParticipants()
 {
     return m_sSpeakingParticipants;
