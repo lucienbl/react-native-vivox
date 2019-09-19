@@ -123,3 +123,8 @@ Vivox.isMuted(); // returns Promise<boolean>
 ```javascript
 Vivox.getSpeakingParticipants(); // returns Promise<Object>
 ```
+
+### Mute / Unmute a player for the current user
+```javascript
+Vivox.setParticipantMutedForMe("targetUserId", true); // returns Promise<>
+```
