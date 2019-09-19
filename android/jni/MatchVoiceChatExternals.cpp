@@ -115,6 +115,11 @@ JNIEXPORT std::map<std::string, bool> JNICALL vivox_mvc_getSpeakingParticipants(
     return getMVC()->GetSpeakingParticipants();
 }
 
+JNIEXPORT int JNICALL vivox_mvc_setParticipantMutedForMe(const char *pszTargetUserId, bool *pszMuted)
+{
+    return getMVC()->SetParticipantMutedForMe(pszTargetUserId, pszMuted);
+}
+
 JNIEXPORT int JNICALL vivox_mvc_matchLeave()
 {
     return getMVC()->MatchLeave() ? 0 : 1;

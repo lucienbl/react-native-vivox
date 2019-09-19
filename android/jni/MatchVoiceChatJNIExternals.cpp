@@ -137,6 +137,23 @@ JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_muteMyself(
     return bResult;
 }
 
+JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_setParticipantMutedForMe(JNIEnv *jenv, jobject /* obj */, jstring targetUserId, jboolean muted)
+{
+    const char *pszTargetUserId  = (const char *)jenv->GetStringUTFChars(targetUserId,  0);
+    bool *pszMuted = (bool *)(muted == JNI_TRUE);
+
+    bool bResult = vivox_mvc_setParticipantMutedForMe(pszTargetUserId, pszMuted) ? false : true;
+
+    if (NULL != pszTargetUserId) {
+        pszTargetUserId = NULL;
+    }
+    if (NULL != pszMuted) {
+        pszMuted = NULL;
+    }
+
+    return bResult;
+}
+
 JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_isMuted(JNIEnv *jenv, jobject /* obj */)
 {
     return vivox_mvc_isMuted() != 0;
