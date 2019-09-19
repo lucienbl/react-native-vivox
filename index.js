@@ -90,4 +90,14 @@ export const isMuted = async (): boolean => {
  */
 export const getSpeakingParticipants = async ():Object => {
   return Vivox.getSpeakingParticipants();
-} ;
+};
+
+/**
+ * Mute / Unmute a player for myself.
+ * @param targetUserId
+ * @param muted
+ * @returns {Promise<*>}
+ */
+export const setParticipantMutedForMe = async (targetUserId: string, muted: boolean): void => {
+  return Vivox.setParticipantMutedForMe(targetUserId, muted);
+};
