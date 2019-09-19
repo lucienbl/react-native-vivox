@@ -11,6 +11,6 @@
 - (int) getState;
 - (void) muteMyself:(BOOL *)value;
 - (BOOL) isMuted;
-- (NSDictionary) getSpeakingParticipants;
+- (NSDictionary *) getSpeakingParticipants;
 
 @end
