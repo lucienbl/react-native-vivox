@@ -33,6 +33,10 @@ RCT_EXPORT_METHOD(leaveMatch) {
 RCT_EXPORT_METHOD(muteMyself:(BOOL *)value) {
     [cppWrapper muteMyself:value];
 }
+
+RCT_EXPORT_METHOD(setParticipantMutedForMe:(NSString *)targetUserId muted:(BOOL *)muted) {
+    [cppWrapper setParticipantMutedForMe:targetUserId muted:muted];
+}
                   
 RCT_REMAP_METHOD(getState, getStateResolver:(RCTPromiseResolveBlock)resolve
 rejecter:(RCTPromiseRejectBlock)reject) {

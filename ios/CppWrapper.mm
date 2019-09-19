@@ -70,4 +70,11 @@
     return dict;
 }
 
+- (void) setParticipantMutedForMe:(NSString *)targetUserId muted:(BOOL *)muted {
+    const char * targetUserIdString = [targetUserId cStringUsingEncoding:NSASCIIStringEncoding];
+    bool * mute = (bool *) (muted == (BOOL *)YES);
+    
+    matchVoiceChat.SetParticipantMutedForMe(targetUserIdString, mute);
+}
+
 @end
