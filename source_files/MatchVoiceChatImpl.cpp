@@ -948,7 +948,7 @@ bool MatchVoiceChatImpl::SetParticipantMutedForMe(const char *targetUserId, bool
     AccountName account(m_sUserID.c_str());
     Uri channel(m_sMatchChannelURI.c_str());
     Uri targetUser(targetUserURI.c_str());
-    
+
     m_pConnection->SetParticipantMutedForMe(account, targetUser, channel, muted);
 
     return true;
