@@ -18,6 +18,8 @@ LOCAL_CFLAGS += -fvisibility=hidden -fPIC
 # LOCAL_C_INCLUDES := \
 # 	${PROJECT_SOURCE_DIR}/src/util/mvc
 
+VIVOX_MODULES_DIR=/Users/lucien/Downloads/vivox-sdk-5.1.0000.32727.aaed8bfb-android/sdk/core/modules/Debug
+
 LOCAL_SRC_FILES := \
 	MatchVoiceChatJNIExternals.cpp \
 	MatchVoiceChatExternals.cpp \
