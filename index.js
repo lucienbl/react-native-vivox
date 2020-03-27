@@ -18,10 +18,8 @@ export const connect = async (serverUrl: string, issuer: string, realm: string) 
  * @param userId
  * @param token
  */
-export const login = (userId: string, token: string) => {
-  setTimeout(async () => {
-    await Vivox.setLoginCredentials(userId, token);
-  }, 2000);
+export const login = async (userId: string, token: string) => {
+  await Vivox.setLoginCredentials(userId, token);
 };
 
 /**
