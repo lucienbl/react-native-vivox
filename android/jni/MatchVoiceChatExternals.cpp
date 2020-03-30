@@ -120,6 +120,11 @@ JNIEXPORT int JNICALL vivox_mvc_setParticipantMutedForMe(const char *pszTargetUs
     return getMVC()->SetParticipantMutedForMe(pszTargetUserId, pszMuted);
 }
 
+JNIEXPORT int JNICALL vivox_mvc_setAudioOutputDeviceMuted(bool *pszMuted)
+{
+    return getMVC()->SetAudioOutputDeviceMuted(pszMuted);
+}
+
 JNIEXPORT int JNICALL vivox_mvc_matchLeave()
 {
     return getMVC()->MatchLeave() ? 0 : 1;

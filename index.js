@@ -99,3 +99,12 @@ export const getSpeakingParticipants = async ():Object => {
 export const setParticipantMutedForMe = async (targetUserId: string, muted: boolean): void => {
   return Vivox.setParticipantMutedForMe(targetUserId, muted);
 };
+
+/**
+ * Mute everyone for me
+ * @param muted
+ * @returns {Promise<*>}
+ */
+export const setAudioOutputDeviceMuted = async (muted: boolean): void => {
+  return Vivox.setAudioOutputDeviceMuted(muted);
+};

@@ -954,6 +954,16 @@ bool MatchVoiceChatImpl::SetParticipantMutedForMe(const char *targetUserId, bool
     return true;
 }
 
+bool MatchVoiceChatImpl::SetAudioOutputDeviceMuted(bool *muted)
+{
+    CHECK(m_state == MatchVoiceChat::stateInMatch);
+    CHECK(m_pConnection);
+
+    m_pConnection->SetAudioOutputDeviceMuted(muted);
+
+    return true;
+}
+
 std::map<std::string, bool> MatchVoiceChatImpl::GetSpeakingParticipants()
 {
     return m_sSpeakingParticipants;

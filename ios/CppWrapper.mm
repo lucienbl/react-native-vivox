@@ -77,4 +77,10 @@
     matchVoiceChat.SetParticipantMutedForMe(targetUserIdString, mute);
 }
 
+- (void) setAudioOutputDeviceMuted:(BOOL *)muted {
+    bool * mute = (bool *) (muted == (BOOL *)YES);
+    
+    matchVoiceChat.SetAudioOutputDeviceMuted(mute);
+}
+
 @end

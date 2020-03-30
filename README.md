@@ -128,3 +128,8 @@ Vivox.getSpeakingParticipants(); // returns Promise<Object>
 ```javascript
 Vivox.setParticipantMutedForMe("targetUserId", true); // returns Promise<>
 ```
+
+### Mute / Unmute everyone for the current user
+```javascript
+Vivox.setAudioOutputDeviceMuted(true); // returns Promise<>
+```
