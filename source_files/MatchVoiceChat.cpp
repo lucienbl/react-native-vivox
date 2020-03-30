@@ -67,6 +67,11 @@ bool MatchVoiceChat::SetParticipantMutedForMe(const char *targetUserId, bool *mu
     return m_pImpl->SetParticipantMutedForMe(targetUserId, muted);
 }
 
+bool MatchVoiceChat::SetAudioOutputDeviceMuted(bool *muted)
+{
+    return m_pImpl->SetAudioOutputDeviceMuted(muted);
+}
+
 bool MatchVoiceChat::MatchLeave()
 {
     return m_pImpl->MatchLeave();

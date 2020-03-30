@@ -40,6 +40,7 @@ public:
     bool IsMuted();
     std::map<std::string, bool> GetSpeakingParticipants();
     bool SetParticipantMutedForMe(const char *targetUserId, bool *muted);
+    bool SetAudioOutputDeviceMuted(bool *muted);
 
     // State
 

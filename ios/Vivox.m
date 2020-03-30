@@ -37,6 +37,10 @@ RCT_EXPORT_METHOD(muteMyself:(BOOL *)value) {
 RCT_EXPORT_METHOD(setParticipantMutedForMe:(NSString *)targetUserId muted:(BOOL *)muted) {
     [cppWrapper setParticipantMutedForMe:targetUserId muted:muted];
 }
+
+RCT_EXPORT_METHOD(setAudioOutputDeviceMuted:(BOOL *)muted) {
+    [cppWrapper setAudioOutputDeviceMuted:muted];
+}
                   
 RCT_REMAP_METHOD(getState, getStateResolver:(RCTPromiseResolveBlock)resolve
 rejecter:(RCTPromiseRejectBlock)reject) {
