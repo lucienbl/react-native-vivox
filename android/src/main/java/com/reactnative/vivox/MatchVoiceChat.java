@@ -25,7 +25,7 @@ public class MatchVoiceChat {
 
     public static native HashMap<String, String> getSpeakingParticipants();
 
-    public static native boolean setParticipantMutedForMe(String targetUserId, Boolean muted);
+    public static native boolean setParticipantMutedForMe(String targetUserId, boolean muted);
 
-    public static native boolean setAudioOutputDeviceMuted(Boolean muted);
+    public static native boolean setAudioOutputDeviceMuted(boolean muted);
 }

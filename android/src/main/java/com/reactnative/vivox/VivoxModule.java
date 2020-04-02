@@ -121,7 +121,7 @@ public class VivoxModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setParticipantMutedForMe(String targetUserId, Boolean muted, Promise promise) {
+    public void setParticipantMutedForMe(String targetUserId, boolean muted, Promise promise) {
         try {
             promise.resolve(MatchVoiceChat.setParticipantMutedForMe(targetUserId, muted));
         } catch (Exception e) {
@@ -130,7 +130,7 @@ public class VivoxModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setAudioOutputDeviceMuted(Boolean muted, Promise promise) {
+    public void setAudioOutputDeviceMuted(boolean muted, Promise promise) {
         try {
             promise.resolve(MatchVoiceChat.setAudioOutputDeviceMuted(muted));
         } catch (Exception e) {
