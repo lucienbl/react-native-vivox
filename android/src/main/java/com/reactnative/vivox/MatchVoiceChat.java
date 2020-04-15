@@ -28,4 +28,6 @@ public class MatchVoiceChat {
     public static native boolean setParticipantMutedForMe(String targetUserId, boolean muted);
 
     public static native boolean setAudioOutputDeviceMuted(boolean muted);
+
+    public static native boolean setParticipantAudioOutputDeviceVolumeForMe(String targetUserId, int volume);
 }

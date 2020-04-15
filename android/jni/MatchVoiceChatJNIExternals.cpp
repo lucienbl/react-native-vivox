@@ -154,6 +154,23 @@ JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_setParticip
     return bResult;
 }
 
+JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_setParticipantAudioOutputDeviceVolumeForMe(JNIEnv *jenv, jobject /* obj */, jstring targetUserId, jint volume)
+{
+    const char *pszTargetUserId  = (const char *)jenv->GetStringUTFChars(targetUserId,  0);
+    int pszVolume = (int)volume;
+
+    bool bResult = vivox_mvc_setParticipantAudioOutputDeviceVolumeForMe(pszTargetUserId, pszVolume) ? false : true;
+
+    if (NULL != pszTargetUserId) {
+        pszTargetUserId = NULL;
+    }
+    if (NULL != pszVolume) {
+        pszVolume = NULL;
+    }
+
+    return bResult;
+}
+
 JNIEXPORT jboolean JNICALL Java_com_reactnative_vivox_MatchVoiceChat_setAudioOutputDeviceMuted(JNIEnv *jenv, jobject /* obj */, jboolean muted)
 {
     bool *pszMuted = (bool *)(muted == JNI_TRUE);

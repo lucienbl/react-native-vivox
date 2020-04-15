@@ -13,7 +13,7 @@
     const char * serverString = [server cStringUsingEncoding:NSASCIIStringEncoding];
     const char * issuerString = [issuer cStringUsingEncoding:NSASCIIStringEncoding];
     const char * realmString = [realm cStringUsingEncoding:NSASCIIStringEncoding];
-    
+
     matchVoiceChat.ServerConnect(serverString, issuerString, realmString);
     [avAudioHelper setSpeakerPhone:true];
 }
@@ -22,7 +22,7 @@
     RCTLogInfo(@"Setting credentials...");
     const char * userIdString = [userId cStringUsingEncoding:NSASCIIStringEncoding];
     const char * userTokenString = [userToken cStringUsingEncoding:NSASCIIStringEncoding];
-    
+
     matchVoiceChat.SetLoginCredentials(userIdString, userTokenString);
 }
 
@@ -30,7 +30,7 @@
     RCTLogInfo(@"Joining match...");
     const char * channelIdString = [channelId cStringUsingEncoding:NSASCIIStringEncoding];
     const char * joinTokenString = [joinToken cStringUsingEncoding:NSASCIIStringEncoding];
-    
+
     matchVoiceChat.MatchJoin(channelIdString, joinTokenString);
 }
 
@@ -73,13 +73,19 @@
 - (void) setParticipantMutedForMe:(NSString *)targetUserId muted:(BOOL *)muted {
     const char * targetUserIdString = [targetUserId cStringUsingEncoding:NSASCIIStringEncoding];
     bool * mute = (bool *) (muted == (BOOL *)YES);
-    
+
     matchVoiceChat.SetParticipantMutedForMe(targetUserIdString, mute);
+}
+
+- (void) setParticipantAudioOutputDeviceVolumeForMe:(NSString *)targetUserId volume:(int *)volume {
+    const char * targetUserIdString = [targetUserId cStringUsingEncoding:NSASCIIStringEncoding];
+
+    matchVoiceChat.SetParticipantAudioOutputDeviceVolumeForMe(targetUserIdString, volume);
 }
 
 - (void) setAudioOutputDeviceMuted:(BOOL *)muted {
     bool * mute = (bool *) (muted == (BOOL *)YES);
-    
+
     matchVoiceChat.SetAudioOutputDeviceMuted(mute);
 }
 

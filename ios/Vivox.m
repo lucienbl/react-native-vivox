@@ -25,7 +25,7 @@ RCT_EXPORT_METHOD(joinMatch:(NSString *)channelId joinToken:(NSString *)joinToke
 RCT_EXPORT_METHOD(disconnect) {
     [cppWrapper disconnect];
 }
-                  
+
 RCT_EXPORT_METHOD(leaveMatch) {
     [cppWrapper leaveMatch];
 }
@@ -38,16 +38,20 @@ RCT_EXPORT_METHOD(setParticipantMutedForMe:(NSString *)targetUserId muted:(BOOL 
     [cppWrapper setParticipantMutedForMe:targetUserId muted:muted];
 }
 
+RCT_EXPORT_METHOD(setParticipantAudioOutputDeviceVolumeForMe:(NSString *)targetUserId volume:(int *)volume) {
+    [cppWrapper setParticipantAudioOutputDeviceVolumeForMe:targetUserId volume:volume];
+}
+
 RCT_EXPORT_METHOD(setAudioOutputDeviceMuted:(BOOL *)muted) {
     [cppWrapper setAudioOutputDeviceMuted:muted];
 }
-                  
+
 RCT_REMAP_METHOD(getState, getStateResolver:(RCTPromiseResolveBlock)resolve
 rejecter:(RCTPromiseRejectBlock)reject) {
     int state = [cppWrapper getState];
     resolve([NSNumber numberWithInt:state]);
 }
-                  
+
 RCT_REMAP_METHOD(getStateName, getStateNameResolver:(RCTPromiseResolveBlock)resolve
 rejecter:(RCTPromiseRejectBlock)reject) {
     const char * state = [cppWrapper getStateName];

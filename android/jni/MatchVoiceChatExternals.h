@@ -40,6 +40,7 @@ std::map<std::string, bool> vivox_mvc_getSpeakingParticipants();
 int vivox_mvc_matchLeave();
 int vivox_mvc_setParticipantMutedForMe(const char *pszTargetUserId, bool *pszMuted);
 int vivox_mvc_setAudioOutputDeviceMuted(bool *pszMuted);
+int vivox_mvc_setParticipantAudioOutputDeviceVolumeForMe(const char *pszTargetUserId, int pszVolume);
 
 int vivox_mvc_getState();
 const char *vivox_mvc_getStateName(int state);

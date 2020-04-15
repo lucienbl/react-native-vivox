@@ -108,3 +108,13 @@ export const setParticipantMutedForMe = async (targetUserId: string, muted: bool
 export const setAudioOutputDeviceMuted = async (muted: boolean): void => {
   return Vivox.setAudioOutputDeviceMuted(muted);
 };
+
+/**
+ * Set participant output volume for me
+ * @param targetUserId
+ * @param volume (between 0 and 100)
+ * @returns {Promise<*>}
+ */
+export const setParticipantAudioOutputDeviceVolumeForMe = async (targetUserId: string, volume: number): void => {
+  return Vivox.setParticipantAudioOutputDeviceVolumeForMe(muted);
+};

@@ -133,3 +133,8 @@ Vivox.setParticipantMutedForMe("targetUserId", true); // returns Promise<>
 ```javascript
 Vivox.setAudioOutputDeviceMuted(true); // returns Promise<>
 ```
+
+### Set volume (between 0 and 100) for a target player
+```javascript
+Vivox.setParticipantAudioOutputDeviceVolumeForMe("targetUserId", 50); // returns Promise<>
+```

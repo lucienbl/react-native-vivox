@@ -137,4 +137,13 @@ public class VivoxModule extends ReactContextBaseJavaModule {
             promise.reject(e);
         }
     }
+
+    @ReactMethod
+    public void setParticipantAudioOutputDeviceVolumeForMe(String targetUserId, int volume, Promise promise) {
+        try {
+            promise.resolve(MatchVoiceChat.setParticipantAudioOutputDeviceVolumeForMe(targetUserId, volume));
+        } catch (Exception e) {
+            promise.reject(e);
+        }
+    }
 }

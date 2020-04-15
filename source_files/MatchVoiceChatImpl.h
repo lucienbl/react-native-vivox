@@ -43,6 +43,7 @@ public:
     std::map<std::string, bool> GetSpeakingParticipants();
     bool SetParticipantMutedForMe(const char *targetUserId, bool *muted);
     bool SetAudioOutputDeviceMuted(bool *muted);
+    bool SetParticipantAudioOutputDeviceVolumeForMe(const char *targetUserId, int volume);
 
     // State
 
