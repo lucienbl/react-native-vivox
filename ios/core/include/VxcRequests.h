@@ -1,3 +1,5 @@
+#include <TargetConditionals.h>
+#if !TARGET_OS_SIMULATOR
 /* Copyright (c) 2013-2018 by Mercer Road Corp
  *
  * Permission to use, copy, modify or distribute this software in binary or source form
@@ -5788,3 +5790,4 @@ VIVOXSDK_DLLEXPORT int destroy_req(vx_req_base_t *pCmd);
 #endif
 
 #pragma pack(pop)
+#endif

@@ -1,3 +1,5 @@
+#include <TargetConditionals.h>
+#if !TARGET_OS_SIMULATOR
 /* Copyright (c) 2013-2018 by Mercer Road Corp
  *
  * Permission to use, copy, modify or distribute this software in binary or source form
@@ -143,3 +145,4 @@ static int init_cell()
 SYS_PROCESS_PARAM(1001, 1024 * 512);
 
 #endif // SN_TARGET_PS3
+#endif

@@ -1,3 +1,5 @@
+#include <TargetConditionals.h>
+#if !TARGET_OS_SIMULATOR
 #import "CppWrapper.h"
 #import <React/RCTLog.h>
 #import "../source_files/MatchVoiceChat.h"
@@ -90,3 +92,4 @@
 }
 
 @end
+#endif

@@ -1,3 +1,5 @@
+#include <TargetConditionals.h>
+#if !TARGET_OS_SIMULATOR
 #import "Vivox.h"
 #import <Foundation/Foundation.h>
 #import <React/RCTLog.h>
@@ -69,3 +71,4 @@ rejecter:(RCTPromiseRejectBlock)reject) {
 }
 
 @end
+#endif

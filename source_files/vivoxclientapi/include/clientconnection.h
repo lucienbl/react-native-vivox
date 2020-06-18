@@ -1,3 +1,7 @@
+#include <TargetConditionals.h>
+#if !TARGET_OS_SIMULATOR
+
+
 #pragma once
 /* Copyright (c) 2014-2018 by Mercer Road Corp
 *
@@ -681,3 +685,4 @@ private:
     ClientConnectionImpl *m_pImpl;
 };
 }
+#endif

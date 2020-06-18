@@ -1,3 +1,5 @@
+#include <TargetConditionals.h>
+#if !TARGET_OS_SIMULATOR
 /* Copyright (c) 2013-2018 by Mercer Road Corp
  *
  * Permission to use, copy, modify or distribute this software in binary or source form
@@ -272,4 +274,5 @@ VIVOXSDK_DLLEXPORT const char *vx_get_log_level_string(vx_log_level level);
 #endif  // !defined(VIVOX_TYPES_ONLY)
 #ifdef __cplusplus
 }
+#endif
 #endif

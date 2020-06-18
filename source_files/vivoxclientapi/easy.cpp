@@ -1,3 +1,5 @@
+#include <TargetConditionals.h>
+#if !TARGET_OS_SIMULATOR
 /* Copyright (c) 2013-2018 by Mercer Road Corp
  *
  * Permission to use, copy, modify or distribute this software in binary or source form
@@ -639,3 +641,4 @@ int EasyApp::DestroyRenderDevice(int aprd_id)
 {
     return m_sdk.DestroyRenderDevice(aprd_id);
 }
+#endif

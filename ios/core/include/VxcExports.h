@@ -1,3 +1,5 @@
+#include <TargetConditionals.h>
+#if !TARGET_OS_SIMULATOR
 /* Copyright (c) 2013-2018 by Mercer Road Corp
  *
  * Permission to use, copy, modify or distribute this software in binary or source form
@@ -31,3 +33,4 @@
 #       define VIVOXSDK_DLLEXPORT __attribute__ ((visibility("default")))
 #   endif
 # endif
+#endif

@@ -1,3 +1,5 @@
+#include <TargetConditionals.h>
+#if !TARGET_OS_SIMULATOR
 /* Copyright (c) 2014-2018 by Mercer Road Corp
 *
 * Permission to use, copy, modify or distribute this software in binary or source form
@@ -108,3 +110,4 @@ void pf_free_aligned_func(void *memory)
 }
 }
 # endif // VX_TEST_MEM_ALLOCATORS
+#endif

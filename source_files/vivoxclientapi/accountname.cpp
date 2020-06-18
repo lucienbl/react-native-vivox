@@ -1,3 +1,5 @@
+#include <TargetConditionals.h>
+#if !TARGET_OS_SIMULATOR
 /* Copyright (c) 2014-2018 by Mercer Road Corp
 *
 * Permission to use, copy, modify or distribute this software in binary or source form
@@ -62,3 +64,4 @@ bool AccountName::operator<(const AccountName &RHS) const
     return strcmp(m_name, RHS.m_name) < 0;
 }
 }
+#endif
