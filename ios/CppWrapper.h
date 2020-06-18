@@ -14,6 +14,6 @@
 - (NSDictionary *) getSpeakingParticipants;
 - (void) setParticipantMutedForMe:(NSString *)targetUserId muted:(BOOL *)muted;
 - (void) setAudioOutputDeviceMuted:(BOOL *)muted;
-- (void) setParticipantAudioOutputDeviceVolumeForMe:(NSString *)targetUserId volume(int *)volume;
+- (void) setParticipantAudioOutputDeviceVolumeForMe:(NSString *)targetUserId volume:(int)volume;
 
 @end

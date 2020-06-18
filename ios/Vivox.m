@@ -40,7 +40,7 @@ RCT_EXPORT_METHOD(setParticipantMutedForMe:(NSString *)targetUserId muted:(BOOL 
     [cppWrapper setParticipantMutedForMe:targetUserId muted:muted];
 }
 
-RCT_EXPORT_METHOD(setParticipantAudioOutputDeviceVolumeForMe:(NSString *)targetUserId volume:(int *)volume) {
+RCT_EXPORT_METHOD(setParticipantAudioOutputDeviceVolumeForMe:(NSString *)targetUserId volume:(int)volume) {
     [cppWrapper setParticipantAudioOutputDeviceVolumeForMe:targetUserId volume:volume];
 }
 

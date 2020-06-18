@@ -79,7 +79,7 @@
     matchVoiceChat.SetParticipantMutedForMe(targetUserIdString, mute);
 }
 
-- (void) setParticipantAudioOutputDeviceVolumeForMe:(NSString *)targetUserId volume:(int *)volume {
+- (void) setParticipantAudioOutputDeviceVolumeForMe:(NSString *)targetUserId volume:(int)volume {
     const char * targetUserIdString = [targetUserId cStringUsingEncoding:NSASCIIStringEncoding];
 
     matchVoiceChat.SetParticipantAudioOutputDeviceVolumeForMe(targetUserIdString, volume);
