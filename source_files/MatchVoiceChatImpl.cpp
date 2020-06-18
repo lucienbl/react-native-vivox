@@ -173,7 +173,7 @@ bool MatchVoiceChatImpl::MatchJoin(const char *pszMatchName, const char *pszMatc
 
 bool MatchVoiceChatImpl::SetLoginCredentials(const char *pszUserId, const char *pszUserToken)
 {
-    CHECK(!m_sIssuer.empty());
+    // CHECK(!m_sIssuer.empty());
 
     if (!InternalInitialize()) {
         LOG_ERR("%s: InternalInitialize() failed", __FUNCTION__);
@@ -226,8 +226,8 @@ void MatchVoiceChatImpl::ThreadProc()
         }
     }
 
-    CHECK(IsStopping());
-    CHECK(MatchVoiceChat::stateThreadStarted == GetState());
+    // CHECK(IsStopping());
+    // CHECK(MatchVoiceChat::stateThreadStarted == GetState());
 
     // Cleanup
     {
@@ -385,7 +385,7 @@ void MatchVoiceChatImpl::HandleState()
             {
                 if (bIsStopping) {
                     Uninitialize();
-                    CHECK(m_state == MatchVoiceChat::stateThreadStarted);
+                    // CHECK(m_state == MatchVoiceChat::stateThreadStarted);
                     return;
                 }
                 if (bSameVivoxServer) {
@@ -419,11 +419,11 @@ void MatchVoiceChatImpl::HandleState()
                     TimerStop();
                     SetState(MatchVoiceChat::stateSDKInitialized);
                     Uninitialize();
-                    CHECK(m_state == MatchVoiceChat::stateThreadStarted);
+                    // CHECK(m_state == MatchVoiceChat::stateThreadStarted);
                     return;
                 }
                 if (bSameVivoxServer) {
-                    CHECK(!m_sVivoxServerURL.empty());
+                    // CHECK(!m_sVivoxServerURL.empty());
                     if (!IsTimeoutElapsed()) {
                         return; // waiting
                     }
@@ -442,7 +442,7 @@ void MatchVoiceChatImpl::HandleState()
             }
             case MatchVoiceChat::stateConnected:
             {
-                CHECK(!m_sVivoxServerURL.empty());
+                // CHECK(!m_sVivoxServerURL.empty());
                 if (bIsStopping) {
                     Disconnect();
                 } else if (bSameVivoxServer) {
@@ -454,7 +454,7 @@ void MatchVoiceChatImpl::HandleState()
             }
             case MatchVoiceChat::stateLoginRetry:
             {
-                CHECK(!m_sVivoxServerURL.empty());
+                // CHECK(!m_sVivoxServerURL.empty());
                 if (bIsStopping) {
                     TimerStop();
                     SetState(MatchVoiceChat::stateConnected);
@@ -473,7 +473,7 @@ void MatchVoiceChatImpl::HandleState()
             }
             case MatchVoiceChat::stateInvalidLoginCredentials:
             {
-                CHECK(!m_sVivoxServerURL.empty());
+                // CHECK(!m_sVivoxServerURL.empty());
                 if (bIsStopping) {
                     SetState(MatchVoiceChat::stateConnected);
                     Disconnect();
@@ -487,7 +487,7 @@ void MatchVoiceChatImpl::HandleState()
             }
             case MatchVoiceChat::stateLoggedIn:
             {
-                CHECK(!m_sVivoxServerURL.empty());
+                // CHECK(!m_sVivoxServerURL.empty());
                 if (bIsStopping) {
                     Logout();
                 } else if (bSameVivoxServer) {
@@ -503,8 +503,8 @@ void MatchVoiceChatImpl::HandleState()
             }
             case MatchVoiceChat::stateHaveChannelID:
             {
-                CHECK(!m_sVivoxServerURL.empty());
-                CHECK(!m_sMatchName.empty());
+                // CHECK(!m_sVivoxServerURL.empty());
+                // CHECK(!m_sMatchName.empty());
 
                 if (bIsStopping) {
                     SetState(MatchVoiceChat::stateLoggedIn);
@@ -528,8 +528,8 @@ void MatchVoiceChatImpl::HandleState()
             }
             case MatchVoiceChat::stateJoinChannelRetry:
             {
-                CHECK(!m_sVivoxServerURL.empty());
-                CHECK(!m_sMatchName.empty());
+                // CHECK(!m_sVivoxServerURL.empty());
+                // CHECK(!m_sMatchName.empty());
 
                 if (bIsStopping) {
                     TimerStop();
@@ -560,8 +560,8 @@ void MatchVoiceChatImpl::HandleState()
             }
             case MatchVoiceChat::stateInvalidChannelCredentials:
             {
-                CHECK(!m_sVivoxServerURL.empty());
-                CHECK(!m_sMatchName.empty());
+                // CHECK(!m_sVivoxServerURL.empty());
+                // CHECK(!m_sMatchName.empty());
 
                 if (bIsStopping) {
                     SetState(MatchVoiceChat::stateLoggedIn);
@@ -585,8 +585,8 @@ void MatchVoiceChatImpl::HandleState()
             }
             case MatchVoiceChat::stateInMatch:
             {
-                CHECK(!m_sVivoxServerURL.empty());
-                CHECK(!m_sMatchName.empty());
+                // CHECK(!m_sVivoxServerURL.empty());
+                // CHECK(!m_sMatchName.empty());
 
                 if (!bIsStopping && bSameVivoxServer && bSameMatch) {
                     return; // Nothing has changed
@@ -761,7 +761,7 @@ void MatchVoiceChatImpl::Initialize()
 {
     LOG_INFO("Initialize (version %s) ...", (SDK_VERSION));
 
-    CHECK(m_state == MatchVoiceChat::stateThreadStarted);
+    // CHECK(m_state == MatchVoiceChat::stateThreadStarted);
 
     SetState(MatchVoiceChat::stateSDKInitializing);
 
@@ -791,7 +791,7 @@ void MatchVoiceChatImpl::Initialize()
 void MatchVoiceChatImpl::Uninitialize()
 {
     LOG_INFO("Uninitializing...");
-    CHECK(m_state == MatchVoiceChat::stateSDKInitialized);
+    // CHECK(m_state == MatchVoiceChat::stateSDKInitialized);
     CHECK(m_pConnection);
     SetState(MatchVoiceChat::stateSDKUninitializing);
     m_pConnection->Uninitialize();
@@ -804,9 +804,9 @@ void MatchVoiceChatImpl::RetrieveChannelID()
 {
     LOG_INFO("Retrieving channel ID...");
 
-    CHECK(!m_sMatchName.empty());
-    CHECK(!m_sRealm.empty());
-    CHECK(m_state == MatchVoiceChat::stateLoggedIn);
+    // CHECK(!m_sMatchName.empty());
+    // CHECK(!m_sRealm.empty());
+    // CHECK(m_state == MatchVoiceChat::stateLoggedIn);
 
     std::stringstream s;
     s << "sip:confctl-g-" << m_sIssuer << "." << m_sMatchName << "@" << m_sRealm;
@@ -818,9 +818,9 @@ void MatchVoiceChatImpl::RetrieveChannelID()
 
 void MatchVoiceChatImpl::Connect()
 {
-    CHECK(m_state == MatchVoiceChat::stateSDKInitialized || m_state == MatchVoiceChat::stateConnectRetry);
+    // CHECK(m_state == MatchVoiceChat::stateSDKInitialized || m_state == MatchVoiceChat::stateConnectRetry);
     CHECK(m_pConnection);
-    CHECK(!m_sVivoxServerURL.empty());
+    // CHECK(!m_sVivoxServerURL.empty());
 
     Uri server(m_sVivoxServerURL.c_str());
     LOG_INFO("Connecting to %s", server.ToString());
@@ -836,9 +836,9 @@ void MatchVoiceChatImpl::Connect()
 
 void MatchVoiceChatImpl::Disconnect()
 {
-    CHECK(m_state == MatchVoiceChat::stateConnected);
+    // CHECK(m_state == MatchVoiceChat::stateConnected);
     CHECK(m_pConnection);
-    CHECK(!m_sVivoxServerURL.empty());
+    // CHECK(!m_sVivoxServerURL.empty());
 
     SetState(MatchVoiceChat::stateDisconnecting);
 
@@ -850,7 +850,7 @@ void MatchVoiceChatImpl::Disconnect()
 
 void MatchVoiceChatImpl::Login()
 {
-    CHECK(m_state == MatchVoiceChat::stateConnected || m_state == MatchVoiceChat::stateLoginRetry);
+    // CHECK(m_state == MatchVoiceChat::stateConnected || m_state == MatchVoiceChat::stateLoginRetry);
     CHECK(m_pConnection);
 
     LOG_INFO("Logging in ...");
@@ -870,7 +870,7 @@ void MatchVoiceChatImpl::Login()
 
 void MatchVoiceChatImpl::Logout()
 {
-    CHECK(m_state == MatchVoiceChat::stateLoggedIn);
+    // CHECK(m_state == MatchVoiceChat::stateLoggedIn);
     CHECK(m_pConnection);
 
     LOG_INFO("Logging out ...");
@@ -888,9 +888,9 @@ void MatchVoiceChatImpl::Logout()
 
 void MatchVoiceChatImpl::Join()
 {
-    CHECK(m_state == MatchVoiceChat::stateHaveChannelID || m_state == MatchVoiceChat::stateJoinChannelRetry);
+    // CHECK(m_state == MatchVoiceChat::stateHaveChannelID || m_state == MatchVoiceChat::stateJoinChannelRetry);
     CHECK(m_pConnection);
-    CHECK(!m_sMatchChannelURI.empty());
+    // CHECK(!m_sMatchChannelURI.empty());
 
     SetState(MatchVoiceChat::stateJoiningChannel);
 
@@ -908,9 +908,9 @@ void MatchVoiceChatImpl::Join()
 
 void MatchVoiceChatImpl::Leave()
 {
-    CHECK(m_state == MatchVoiceChat::stateInMatch);
+    // CHECK(m_state == MatchVoiceChat::stateInMatch);
     CHECK(m_pConnection);
-    CHECK(!m_sMatchChannelURI.empty());
+    // CHECK(!m_sMatchChannelURI.empty());
 
     LOG_INFO("Leaving channel ...");
 
@@ -929,7 +929,7 @@ void MatchVoiceChatImpl::Leave()
 
 bool MatchVoiceChatImpl::MuteMyself(bool *value)
 {
-    CHECK(m_state == MatchVoiceChat::stateInMatch);
+    // CHECK(m_state == MatchVoiceChat::stateInMatch);
     CHECK(m_pConnection);
 
     LOG_INFO(value ? "Disabling audio input..." : "Enabling audio input...");
@@ -941,9 +941,9 @@ bool MatchVoiceChatImpl::MuteMyself(bool *value)
 
 bool MatchVoiceChatImpl::SetParticipantMutedForMe(const char *targetUserId, bool *muted)
 {
-    CHECK(m_state == MatchVoiceChat::stateInMatch);
+    // CHECK(m_state == MatchVoiceChat::stateInMatch);
     CHECK(m_pConnection);
-    CHECK(!m_sMatchChannelURI.empty());
+    // CHECK(!m_sMatchChannelURI.empty());
 
     std::string targetUserURI = "sip:." + m_sIssuer + "." + std::string(targetUserId) + ".@" + m_sRealm;
 
@@ -975,7 +975,7 @@ bool MatchVoiceChatImpl::SetParticipantAudioOutputDeviceVolumeForMe(const char *
 
 bool MatchVoiceChatImpl::SetAudioOutputDeviceMuted(bool *muted)
 {
-    CHECK(m_state == MatchVoiceChat::stateInMatch);
+    // CHECK(m_state == MatchVoiceChat::stateInMatch);
     CHECK(m_pConnection);
 
     m_pConnection->SetAudioOutputDeviceMuted(muted);
@@ -1063,7 +1063,7 @@ void MatchVoiceChatImpl::onConnectCompleted(const Uri &server)
 
     LOG_INFO("%s: %s", __FUNCTION__, server.ToString());
 
-    CHECK(m_state == MatchVoiceChat::stateConnecting);
+    // CHECK(m_state == MatchVoiceChat::stateConnecting);
 
     if (m_state == MatchVoiceChat::stateConnecting) {
         SetState(MatchVoiceChat::stateConnected);
@@ -1076,7 +1076,7 @@ void MatchVoiceChatImpl::onConnectFailed(const Uri &server, VCSStatus status)
 
     LOG_ERR("%s: %s (%d)", __FUNCTION__, server.ToString(), status);
 
-    CHECK(m_state == MatchVoiceChat::stateConnecting);
+    // CHECK(m_state == MatchVoiceChat::stateConnecting);
 
     if (m_state == MatchVoiceChat::stateConnecting) {
         SetTimeoutInState(MatchVoiceChat::stateConnectRetry, TIMEOUT_CONNECT_RETRY);
@@ -1113,7 +1113,7 @@ void MatchVoiceChatImpl::onLoginCompleted(const AccountName &accountName)
 
     LOG_INFO("%s: '%s'", __FUNCTION__, accountName.ToString());
 
-    CHECK(m_state == MatchVoiceChat::stateLoggingIn);
+    // CHECK(m_state == MatchVoiceChat::stateLoggingIn);
 
     if (m_state == MatchVoiceChat::stateLoggingIn) {
         SetState(MatchVoiceChat::stateLoggedIn);
@@ -1126,7 +1126,7 @@ void MatchVoiceChatImpl::onInvalidLoginCredentials(const AccountName &accountNam
 
     LOG_ERR("%s: '%s'", __FUNCTION__, accountName.ToString());
 
-    CHECK(m_state == MatchVoiceChat::stateLoggingIn);
+    // CHECK(m_state == MatchVoiceChat::stateLoggingIn);
 
     if (m_state == MatchVoiceChat::stateLoggingIn) {
         SetState(MatchVoiceChat::stateInvalidLoginCredentials);
@@ -1139,7 +1139,7 @@ void MatchVoiceChatImpl::onLoginFailed(const AccountName &accountName, VCSStatus
 
     LOG_ERR("%s: '%s' - (%d) %s", __FUNCTION__, accountName.ToString(), status, GetErrorString(status));
 
-    CHECK(m_state == MatchVoiceChat::stateLoggingIn);
+    // CHECK(m_state == MatchVoiceChat::stateLoggingIn);
 
     if (m_state == MatchVoiceChat::stateLoggingIn) {
         SetTimeoutInState(MatchVoiceChat::stateLoginRetry, TIMEOUT_LOGIN_RETRY);
@@ -1159,7 +1159,7 @@ void MatchVoiceChatImpl::onLogoutCompleted(const AccountName &accountName)
 
     LOG_INFO("%s: '%s'", __FUNCTION__, accountName.ToString());
 
-    CHECK(m_state == MatchVoiceChat::stateLoggingOut);
+    // CHECK(m_state == MatchVoiceChat::stateLoggingOut);
 
     if (m_state == MatchVoiceChat::stateLoggingOut) {
         SetState(MatchVoiceChat::stateConnected);
@@ -1172,7 +1172,7 @@ void MatchVoiceChatImpl::onLogoutFailed(const AccountName &accountName, VCSStatu
 
     LOG_ERR("%s: '%s' (%d)", __FUNCTION__, accountName.ToString(), status);
 
-    CHECK(m_state == MatchVoiceChat::stateLoggingOut);
+    // CHECK(m_state == MatchVoiceChat::stateLoggingOut);
 
     if (m_state == MatchVoiceChat::stateLoggingOut) {
         LOG_ERR("%s: assuming we are logged out anyway", __FUNCTION__);
@@ -1186,7 +1186,7 @@ void MatchVoiceChatImpl::onChannelJoined(const AccountName &accountName, const U
 
     LOG_INFO("%s: '%s' (%s)", __FUNCTION__, accountName.ToString(), channelUri.ToString());
 
-    CHECK(m_state == MatchVoiceChat::stateJoiningChannel);
+    // CHECK(m_state == MatchVoiceChat::stateJoiningChannel);
 
     if (m_state == MatchVoiceChat::stateJoiningChannel) {
         SetState(MatchVoiceChat::stateInMatch);
@@ -1199,7 +1199,7 @@ void MatchVoiceChatImpl::onInvalidChannelCredentials(const AccountName &accountN
 
     LOG_ERR("%s: '%s' (%s)", __FUNCTION__, accountName.ToString(), channelUri.ToString());
 
-    CHECK(m_state == MatchVoiceChat::stateJoiningChannel);
+    // CHECK(m_state == MatchVoiceChat::stateJoiningChannel);
 
     if (m_state == MatchVoiceChat::stateJoiningChannel) {
         SetState(MatchVoiceChat::stateInvalidChannelCredentials);
@@ -1212,7 +1212,7 @@ void MatchVoiceChatImpl::onChannelJoinFailed(const AccountName &accountName, con
 
     LOG_ERR("%s: '%s' (%s) - (%d) %s", __FUNCTION__, accountName.ToString(), channelUri.ToString(), status, GetErrorString(status));
 
-    CHECK(m_state == MatchVoiceChat::stateJoiningChannel);
+    // CHECK(m_state == MatchVoiceChat::stateJoiningChannel);
 
     if (m_state == MatchVoiceChat::stateJoiningChannel) {
         SetTimeoutInState(MatchVoiceChat::stateJoinChannelRetry, TIMEOUT_JOIN_RETRY);
@@ -1223,7 +1223,7 @@ void MatchVoiceChatImpl::InternalOnChannelLeft()
 {
     LOG_INFO("%s", __FUNCTION__);
 
-    CHECK(m_state == MatchVoiceChat::stateInMatch || m_state == MatchVoiceChat::stateLeavingChannel);
+    // CHECK(m_state == MatchVoiceChat::stateInMatch || m_state == MatchVoiceChat::stateLeavingChannel);
 
     m_sMatchName.clear();
 
