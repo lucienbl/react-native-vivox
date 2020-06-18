@@ -116,5 +116,5 @@ export const setAudioOutputDeviceMuted = async (muted: boolean): void => {
  * @returns {Promise<*>}
  */
 export const setParticipantAudioOutputDeviceVolumeForMe = async (targetUserId: string, volume: number): void => {
-  return Vivox.setParticipantAudioOutputDeviceVolumeForMe(muted);
+  return Vivox.setParticipantAudioOutputDeviceVolumeForMe(targetUserId, volume);
 };
