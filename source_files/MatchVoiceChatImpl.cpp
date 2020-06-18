@@ -53,9 +53,9 @@ extern "C" {
 
 #define SECONDS(n) ((n) * 1000)
 
-#define TIMEOUT_LOGIN_RETRY               SECONDS(15)
-#define TIMEOUT_JOIN_RETRY                SECONDS(15)
-#define TIMEOUT_CONNECT_RETRY             SECONDS(15)
+#define TIMEOUT_LOGIN_RETRY               SECONDS(3)
+#define TIMEOUT_JOIN_RETRY                SECONDS(3)
+#define TIMEOUT_CONNECT_RETRY             SECONDS(3)
 
 using namespace VivoxClientApi;
 
