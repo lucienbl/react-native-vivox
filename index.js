@@ -2,119 +2,51 @@ import { NativeModules } from 'react-native';
 
 const { Vivox } = NativeModules;
 
-/**
- * Connects the app to the Vivox server.
- * @param serverUrl
- * @param issuer
- * @param realm
- * @returns {Promise<void>}
- */
-export const connect = async (serverUrl: string, issuer: string, realm: string) => {
-  await Vivox.connect(serverUrl, issuer, realm);
-};
+if (!Vivox) {
+  Vivox = {
+    connect: () => Promise.resolve(),
+    login: () => Promise.resolve(),
+    joinChannel: () => Promise.resolve(),
+    leaveChannel: () => Promise.resolve(),
+    disconnect: () => Promise.resolve(),
+    getStateName: () => Promise.resolve('Invalid state, ios simulator'),
+    getState: () => Promise.resolve(0),
+    muteMyself: () => Promise.resolve(),
+    isMuted: () => Promise.resolve(false),
+    getSpeakingParticipants: () => Promise.resolve({}),
+    setParticipantMutedForMe: () => Promise.resolve(),
+    setAudioOutputDeviceMuted: () => Promise.resolve(),
+    setParticipantAudioOutputDeviceVolumeForMe: () => Promise.resolve(),
+  };
+} else {
+  // Support deprecated methods
+  Vivox.joinChannel = (channelId: string, token: string) => Vivox.joinMatch(channelId, token);
+  Vivox.leaveChannel = () => Vivox.leaveMatch();
+  Vivox.login = (userId: string, token: string) => Vivox.setLoginCredentials(userId, token);
+}
 
-/**
- * Log in the current player.
- * @param userId
- * @param token
- */
-export const login = async (userId: string, token: string) => {
-  await Vivox.setLoginCredentials(userId, token);
-};
+Vivox.State = {
+  stateUninitialized: 0,
+  stateThreadStarted: 1,
+  stateSDKInitializing: 2,
+  stateSDKInitFailed: 3,
+  stateSDKInitialized: 4,
+  stateSDKUninitializing: 5,
+  stateConnecting: 6,
+  stateConnectRetry: 7,
+  stateConnected: 8,
+  stateDisconnecting: 9,
+  stateLoggingIn: 10,
+  stateLoginRetry: 11,
+  stateInvalidLoginCredentials: 12,
+  stateLoggedIn: 13,
+  stateLoggingOut: 14,
+  stateHaveChannelID: 15,
+  stateJoiningChannel: 16,
+  stateJoinChannelRetry: 17,
+  stateInvalidChannelCredentials: 18,
+  stateInMatch: 19,
+  stateLeavingChannel: 20
+}
 
-/**
- * Join a voice channel.
- * @param channelId
- * @param token
- */
-export const joinChannel = (channelId: string, token: string) => {
-  this.setTimeout(async () => {
-    await Vivox.joinMatch(channelId, token);
-  }, 100);
-};
-
-/**
- * Leave the current channel
- * @returns {Promise<void>}
- */
-export const leaveChannel = async () => {
-  await Vivox.leaveMatch();
-};
-
-/**
- * Disconnect from the Vivox server.
- * @returns {Promise<void>}
- */
-export const disconnect = async () => {
-  await Vivox.disconnect();
-};
-
-/**
- * Retrieve the current state name.
- * @returns {Promise<*>}
- */
-export const getStateName = async (): string => {
-  return Vivox.getStateName();
-};
-
-/**
- * Retrieve the current state integer.
- * @returns {Promise<NavigationPreloadState>}
- */
-export const getState = async (): number => {
-  return Vivox.getState();
-};
-
-/**
- * Mute / Unmute the current player
- * @param value
- * @returns {Promise<*>}
- */
-export const muteMyself = async (value: boolean): void => {
-  return Vivox.muteMyself(value);
-};
-
-/**
- * Retrieve if the current player is muted or not.
- * @returns {Promise<*>}
- */
-export const isMuted = async (): boolean => {
-  return Vivox.isMuted();
-};
-
-/**
- * Retrieve the currently speaking players.
- * @returns {Promise<Object>}
- */
-export const getSpeakingParticipants = async ():Object => {
-  return Vivox.getSpeakingParticipants();
-};
-
-/**
- * Mute / Unmute a player for myself.
- * @param targetUserId
- * @param muted
- * @returns {Promise<*>}
- */
-export const setParticipantMutedForMe = async (targetUserId: string, muted: boolean): void => {
-  return Vivox.setParticipantMutedForMe(targetUserId, muted);
-};
-
-/**
- * Mute everyone for me
- * @param muted
- * @returns {Promise<*>}
- */
-export const setAudioOutputDeviceMuted = async (muted: boolean): void => {
-  return Vivox.setAudioOutputDeviceMuted(muted);
-};
-
-/**
- * Set participant output volume for me
- * @param targetUserId
- * @param volume (between 0 and 100)
- * @returns {Promise<*>}
- */
-export const setParticipantAudioOutputDeviceVolumeForMe = async (targetUserId: string, volume: number): void => {
-  return Vivox.setParticipantAudioOutputDeviceVolumeForMe(targetUserId, volume);
-};
+export default Vivox;
