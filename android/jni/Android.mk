@@ -1,22 +1,14 @@
 LOCAL_PATH := $(call my-dir)
 
-# ------------------------------------------------------------------------------
-
 include $(CLEAR_VARS)
+
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 
 LOCAL_MODULE := mvc
 
 LOCAL_CFLAGS += -fvisibility=hidden -fPIC
 
-# # https://source.android.com/source/jack.html#jack_limitations
-# # have to have separate state for javac because modern Android Jack toolchain
-# # doesn't create *.class files
-# javah : LOCAL_PATH = $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-# 	javac -d $(NDK_APP_OUT)/$(LOCAL_MODULE) $(LOCAL_PATH)/../src/main/java/com/vivox/mvc/MvcActivity.java
-# 	javah -d $(LOCAL_PATH) -classpath :$$ANDROID_HOME/platforms/$(TARGET_PLATFORM)/android.jar:. com.vivox.mvc.MvcActivity
-
-# LOCAL_C_INCLUDES := \
-# 	${PROJECT_SOURCE_DIR}/src/util/mvc
+VIVOX_MODULES_DIR=/Volumes/Lucien/Tools/vivox/5.8.0-android/SDK/Libraries
 
 LOCAL_SRC_FILES := \
 	MatchVoiceChatJNIExternals.cpp \
@@ -28,21 +20,12 @@ LOCAL_SRC_FILES := \
 LOCAL_SRC_FILES += ../../source_files/sha1/sha1.c
 
 LOCAL_LDLIBS := -llog
-LOCAL_STATIC_LIBRARIES := vivoxclientapi-module
 LOCAL_SHARED_LIBRARIES := vivox-sdk
 
 include $(BUILD_SHARED_LIBRARY)
 
-# ------------------------------------------------------------------------------
-
--include $(LOCAL_PATH)/../test/Android.mk
-
-# ------------------------------------------------------------------------------
-
-ifeq (,$(VIVOX_MODULES_DIR))
-$(error define $$(VIVOX_MODULES_DIR))
-endif
-
-$(call import-add-path,$(VIVOX_MODULES_DIR))
-$(call import-module,vivox-sdk)
-$(call import-module,vivoxclientapi-module)
+include $(CLEAR_VARS)
+LOCAL_MODULE := vivox-sdk
+LOCAL_SRC_FILES := Libraries/$(APP_VARIANT)/$(TARGET_ARCH_ABI)/libvivox-sdk.so
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
+include $(PREBUILT_SHARED_LIBRARY)
