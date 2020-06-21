@@ -1,5 +1,5 @@
-#include <TargetConditionals.h>
-#if !TARGET_OS_SIMULATOR
+#include "../../Platform.h"
+#if !IOS_SIMULATOR
 
 
 #pragma once
