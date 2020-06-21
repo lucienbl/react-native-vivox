@@ -1,5 +1,3 @@
-#include <TargetConditionals.h>
-#if !TARGET_OS_SIMULATOR
 /* Copyright (c) 2013-2018 by Mercer Road Corp
  *
  * Permission to use, copy, modify or distribute this software in binary or source form
@@ -156,6 +154,8 @@ typedef enum {
 
     /**
      * Log to the native configured logfile
+     *
+     * @deprecated File logging is not supported. Equivalent log_to_none
      */
     log_to_file = 1,
 
@@ -166,6 +166,8 @@ typedef enum {
 
     /**
      * Log to the native configured log file and the client applicaiton via the registered callback method
+     *
+     * @deprecated File logging is not supported. Equivalent log_to_callback
      */
     log_to_file_and_callback = 3
 } vx_log_type;
@@ -292,10 +294,14 @@ typedef enum {
      * user has blocked the issuing user as well.
      */
     vx_control_communications_operation_unblock = 1,
-
     vx_control_communications_operation_list = 2,
-
-    vx_control_communications_operation_clear = 3
+    vx_control_communications_operation_block_list = 2, // alias for vx_control_communications_operation_list
+    vx_control_communications_operation_clear = 3,
+    vx_control_communications_operation_clear_block_list = 3, // alias vx_control_communications_operation_clear
+    vx_control_communications_operation_mute = 4,
+    vx_control_communications_operation_unmute = 5,
+    vx_control_communications_operation_mute_list = 6,
+    vx_control_communications_operation_clear_mute_list = 7
 } vx_control_communications_operation;
 
 typedef enum {
@@ -510,7 +516,9 @@ typedef enum {
     req_session_archive_query = 137,
     req_account_archive_query = 138,
     req_session_transcription_control = 139,
-    req_max = req_session_transcription_control + 1
+    req_aux_get_derumbler_properties = 140,
+    req_aux_set_derumbler_properties = 141,
+    req_max = req_aux_set_derumbler_properties + 1
 } vx_request_type;
 
 /**
@@ -640,7 +648,9 @@ typedef enum {
     resp_session_archive_query = 137,
     resp_account_archive_query = 138,
     resp_session_transcription_control = 139,
-    resp_max = resp_session_transcription_control + 1
+    resp_aux_get_derumbler_properties = 140,
+    resp_aux_set_derumbler_properties = 141,
+    resp_max = resp_aux_set_derumbler_properties + 1
 } vx_response_type;
 
 /**
@@ -685,7 +695,10 @@ typedef enum {
     evt_account_archive_query_end = 46,
     evt_account_send_message_failed = 47,
     evt_transcribed_message = 48,
-    evt_max = evt_transcribed_message + 1
+    evt_tts_injection_started = 49,
+    evt_tts_injection_ended = 50,
+    evt_tts_injection_failed = 51,
+    evt_max = evt_tts_injection_failed + 1
 } vx_event_type;
 
 typedef struct vx_req_base {
@@ -972,16 +985,6 @@ typedef enum {
     participant_owner = 2,
     part_focus = participant_owner  // For backward compatibility
 } vx_participant_type;
-
-enum media_codec_type {
-    media_codec_type_none = 0,
-    media_codec_type_siren14 = 1,
-    media_codec_type_pcmu = 2,
-    media_codec_type_nm = 3,
-    media_codec_type_speex = 4,
-    media_codec_type_siren7 = 5,
-    media_codec_type_opus = 6
-};
 
 typedef enum {
     orientation_default = 0,
@@ -1879,6 +1882,8 @@ VIVOXSDK_DLLEXPORT int vx_register_logging_initialization(
 /**
  * Get the SDK log file path
  * \ingroup diagnostics
+ *
+ * @deprecated file logging is not supported.
  */
 VIVOXSDK_DLLEXPORT char *vx_get_log_file_path(void);
 
@@ -1962,6 +1967,12 @@ VIVOXSDK_DLLEXPORT int vx_on_application_exit(void);
  * \ingroup diagnostics
  */
 VIVOXSDK_DLLEXPORT const char *vx_get_sdk_version_info(void);
+
+/**
+ * Get the SDK extended version info
+ * \ingroup diagnostics
+ */
+VIVOXSDK_DLLEXPORT const char *vx_get_sdk_version_info_ex(void);
 
 /**
  * Apply a vivox voice font to a wav file
@@ -2185,7 +2196,7 @@ VIVOXSDK_DLLEXPORT int vx_uninitialize(void);
 #define VIVOX_V_V2_AUDIO_DATA_MONO_PCMU_8000_EXPANDED 0x10005
 
 /**
- * configured_codecs is a mask of these constants
+ * configured_codecs field in vx_req_connector_create is a mask of these constants
  */
 #define VIVOX_VANI_PCMU         0x1   /* PCMU */
 #define VIVOX_VANI_SIREN7       0x2   /* Siren7, 16kHz, 32kbps */
@@ -2197,6 +2208,19 @@ VIVOXSDK_DLLEXPORT int vx_uninitialize(void);
 #define VIVOX_VANI_OPUS72       0x80  /* Opus, 48kHz, 72kbps */ /* proposed; pending research */
 #define VIVOX_VANI_OPUS         VIVOX_VANI_OPUS40
 #define VIVOX_VANI_OPUS_MASK    0xf0
+
+/**
+ * configured_codecs field in vx_req_connector_create is a mask of these constants
+ */
+typedef enum {
+    vx_codec_pcmu = VIVOX_VANI_PCMU,               /* PCMU */
+    vx_codec_siren7 = VIVOX_VANI_SIREN7,           /* Siren7, 16kHz, 32kbps */
+    vx_codec_siren14 = VIVOX_VANI_SIREN14,         /* Siren14, 32kHz, 32kbps */
+    vx_codec_opus8 = VIVOX_VANI_OPUS8,             /* Opus, 48kHz, 8kbps */
+    vx_codec_opus40 = VIVOX_VANI_OPUS40,           /* Opus, 48kHz, 40kbps -- recommended Opus default */
+    vx_codec_opus57 = VIVOX_VANI_OPUS57,           /* Opus, 48kHz, 57kbps -- proposed; pending research */
+    vx_codec_opus72 = VIVOX_VANI_OPUS72            /* Opus, 48kHz, 72kbps -- proposed; pending research */
+} vx_codec;
 
 typedef struct vx_stat_sample {
     double sample_count;
@@ -3077,9 +3101,185 @@ VIVOXSDK_DLLEXPORT int vx_set_agc_enabled(int enabled);
  */
 VIVOXSDK_DLLEXPORT int vx_get_agc_enabled(int *enabled);
 
+/**
+ * Text-to-Speech (TTS) Definitions
+ */
+
+/**
+ * Destination definitions used by the text-to-speech subsystem.
+ */
+typedef enum {
+    tts_dest_remote_transmission = 0, /**< Immediately send to participants in connected sessions. Mixes new message with any other ongoing messages.*/
+    tts_dest_local_playback = 1, /**< Immediately play back locally on render device (e.g. speakers). Mixes new message with any other ongoing messages. */
+    tts_dest_remote_transmission_with_local_playback = 2, /**< Immediately play back locally on render device, and send to participants in connected sessions. Mixes new message with any other ongoing messages. */
+    tts_dest_queued_remote_transmission = 3, /**< Send to participants in connected sessions, or enqueue if there is already an ongoing message playing in this destination. */
+    tts_dest_queued_local_playback = 4, /**< Play back locally on render device (e.g. speakers), or enqueue if there is already an ongoing message playing in this destination. */
+    tts_dest_queued_remote_transmission_with_local_playback = 5, /**< Play back locally on render device, and send to participants in connected sessions. Enqueue if there is already an ongoing message playing in this destination. */
+    tts_dest_screen_reader = 6 /**< Immediately play back locally on render device (e.g. speakers). Replaces the currently playing message in this destination. */
+} vx_tts_destination;
+
+/**
+ * Status codes that are returned by the text-to-speech subsystem.
+ */
+typedef enum {
+    tts_status_success = 0, /**< Successful TTS operation. */
+    tts_error_invalid_engine_type = -1001, /**< Invalid TTS engine type. */
+    tts_error_engine_allocation_failed = -1002, /**< TTS engine allocation failed. */
+    tts_error_not_supported = -1003, /**< TTS operation is not supported or not yet implemented. */
+    tts_error_max_characters_exceeded = -1004, /**< Message exceeded maximum number of characters in input text. Maximum number of characters is 100. */
+    tts_error_utterance_below_min_duration = -1005, /**< The text-to-speech utterance was below 20ms after synthesis, and thus ignored. */
+    tts_status_input_text_was_enqueued = -1006, /**< TTS message was enqueued as there is another TTS message already playing. */
+    tts_error_sdk_not_initialized = -1007, /**< SDK is not initialized. Please initialize and retry. */
+    tts_error_destination_queue_is_full = -1008, /**< Destination queue is full. Destination queue limit is 10 items. */
+    tts_status_enqueue_not_necessary = -1009, /**< Queue is empty and no active TTS message is playing. Ready for injection. */
+    tts_error_utterance_not_found = -1010, /**< Utterance was not found. */
+    tts_error_manager_not_found = -1011, /**< Text-to-Speech manager was not found. */
+    tts_error_invalid_argument = -1012, /**< One or more arguments are invalid. */
+    tts_error_internal = -1013 /**< Internal error. */
+} vx_tts_status;
+
+typedef unsigned int vx_tts_manager_id;
+typedef unsigned int vx_tts_utterance_id;
+typedef unsigned int vx_tts_voice_id;
+
+/* end definitions outside of #ifndef VX_DISABLE_TTS */
+
+#ifndef VX_DISABLE_TTS
+#define VX_TTS_CHARACTER_COUNT_LIMIT 100
+#define VX_TTS_MAX_DESTINATION_QUEUE_SIZE 10
+#define VX_TTS_DEFAULT_DESTINATION tts_dest_remote_transmission
+
+/**
+ * Text-to-speech engine types
+ */
+typedef enum {
+    /**
+     * Vivox Default TTS Engine
+     */
+    tts_engine_vivox_default = 0
+} vx_tts_engine_type;
+
+typedef struct vx_tts_utterance_impl vx_tts_utterance_impl_t;
+
+/**
+ * Text-to-speech utterance
+ */
+typedef struct vx_tts_utterance {
+    const vx_tts_utterance_impl_t * const utterance_obj; /**< The backing implementation of the utterance. */
+    const short *speech_buffer; /**< PCM buffer of synthesized speech. */
+    int sample_rate; /**< The sample rate of audio in the utterance. */
+    int num_frames; /**< The number of frames of audio in the utterance. */
+    int num_channels; /**< The number of channels the audio in the utterance consists of. */
+} vx_tts_utterance_t;
+
+/**
+* Text-to-speech voice
+*/
+typedef struct vx_tts_voice {
+    vx_tts_voice_id voice_id; /**< Unique identifier of the voice. */
+    const char *name; /**< Name of the voice. */
+} vx_tts_voice_t;
+
+/**
+ * Initializes a new text-to-speech manager.
+ *
+ * @param engine_type Type of the text-to-speech engine. If unsure we recommend using the default
+ * @param tts_manager_id [out] Unique identifier of the newly created text-to-speech manager
+ * @return status code
+*/
+VIVOXSDK_DLLEXPORT vx_tts_status vx_tts_initialize(vx_tts_engine_type engine_type, vx_tts_manager_id *tts_manager_id);
+
+/**
+ * Gets the available voices for a text-to-speech manager.
+ *
+ * @param tts_manager_id Unique identifier of the TTS manager
+ * @param num_voices [out] The number of voices supported by the Text-to-speech manager
+ * @param voices [out] Pointer to the first voice. Does not need to be deleted when finished using.
+ * @return status code
+*/
+VIVOXSDK_DLLEXPORT vx_tts_status vx_tts_get_voices(vx_tts_manager_id tts_manager_id, int *num_voices, vx_tts_voice_t **voices);
+
+/**
+ * Uninitializes and shuts down a text-to-speech manager.
+ *
+ * @param tts_manager_id Unique identifier of the TTS manager to shutdown. Passing NULL shuts down all managers.
+ * @see vx_tts_initialize()
+ * @return status code
+*/
+VIVOXSDK_DLLEXPORT vx_tts_status vx_tts_shutdown(vx_tts_manager_id *tts_manager_id);
+
+/**
+ * Returns a textual representation of a text-to-speech status code.
+ *
+ * @param status_code text-to-speech status code
+ * @return status code description
+*/
+VIVOXSDK_DLLEXPORT const char *vx_get_tts_status_string(vx_tts_status status_code);
+
+/**
+ * Converts the input text into speech and processes the generated utterance on the selected destination.
+ *
+ * @param tts_manager_id Unique identifier of the TTS manager
+ * @param voice_id Unique identifier of the voice
+ * @param input_text Text message to be converted into speech
+ * @param tts_dest The destination on which to play the message
+ * @param utterance_id [out] Unique identifier of utterance
+ * @return status code
+*/
+VIVOXSDK_DLLEXPORT vx_tts_status vx_tts_speak(vx_tts_manager_id tts_manager_id, vx_tts_voice_id voice_id, const char *input_text, vx_tts_destination tts_dest, vx_tts_utterance_id *utterance_id);
+
+/**
+ * Converts the input text into speech and returns the generated utterance.
+ *
+ * @param tts_manager_id Unique identifier of the TTS manager
+ * @param voice_id Unique identifier of the voice
+ * @param input_text Text message to be converted into speech
+ * @param utterance [out] Utterance generated from the input text
+ * @return status code
+*/
+VIVOXSDK_DLLEXPORT vx_tts_status vx_tts_speak_to_buffer(vx_tts_manager_id tts_manager_id, vx_tts_voice_id voice_id, const char *input_text, vx_tts_utterance_t **utterance);
+
+/**
+ * Destroys utterance. Call this function to free up all the memory taken by an utterance.
+ *
+ * @param tts_manager_id - Unique identifier of the TTS engine
+ * @param utterance - Utterance to be destroyed
+ * @see vx_tts_speak_to_buffer()
+ * @return status code
+*/
+VIVOXSDK_DLLEXPORT vx_tts_status vx_tts_destroy_utterance(vx_tts_manager_id tts_manager_id, vx_tts_utterance_t *utterance);
+
+/**
+ * Cancels playback of an ongoing or an enqueued text-to-speech message by its unique identifier.
+ *
+ * @param tts_manager_id Unique identifier of the TTS manager
+ * @param utterance_id Unique identifier of utterance
+ * @see vx_tts_speak()
+ * @return status code
+*/
+VIVOXSDK_DLLEXPORT vx_tts_status vx_tts_cancel_utterance(vx_tts_manager_id tts_manager_id, vx_tts_utterance_id utterance_id);
+
+/**
+ * Cancels playback of ongoing and all enqueued text-to-speech messages in a destination.
+ *
+ * @param tts_manager_id Unique identifier of the TTS manager
+ * @param tts_dest The destination to be cancelled
+ * @return status code
+*/
+VIVOXSDK_DLLEXPORT vx_tts_status vx_tts_cancel_all_in_dest(vx_tts_manager_id tts_manager_id, vx_tts_destination tts_dest);
+
+/**
+ * Cancels playback all ongoing and enqueued text-to-speech messages, on all destinations.
+ *
+ * @param tts_manager_id - Unique identifier of the TTS manager
+ * @return status code
+*/
+VIVOXSDK_DLLEXPORT vx_tts_status vx_tts_cancel_all(vx_tts_manager_id tts_manager_id);
+
+#endif
+
 #ifdef __cplusplus
 }
 #endif
 
 #pragma pack(pop)
-#endif

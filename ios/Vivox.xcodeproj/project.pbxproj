@@ -240,7 +240,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
-					"$(SRCROOT)/core/bin/$(CONFIGURATION)/**",
+					"$(SRCROOT)/core/Libraries/$(CONFIGURATION)/**",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Vivox;
@@ -261,7 +261,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
-					"$(SRCROOT)/core/bin/$(CONFIGURATION)/**",
+					"$(SRCROOT)/core/Libraries/$(CONFIGURATION)/**",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Vivox;

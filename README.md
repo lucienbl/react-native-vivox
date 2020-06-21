@@ -39,7 +39,7 @@ public void onCreate() {
 ```
 
 #### iOS
-1. Add (link) `libvivoxsdk.a` (from `/react-native-vivox/ios/core/bin/${CONFIGURATION}/libvivoxsdk.a`) into Frameworks
+1. Add (link) `libvivoxsdk.a` (from `/react-native-vivox/ios/core/Libraries/${CONFIGURATION}/libvivoxsdk.a`) into Frameworks
 2. Add (link) `libresolv.tbd` [(download)](https://we.tl/t-mEIWcVv26j) into Frameworks
 3. Add the following to your App's `Info.plist`
 ```xml

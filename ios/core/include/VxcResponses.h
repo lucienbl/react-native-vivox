@@ -1,5 +1,3 @@
-#include <TargetConditionals.h>
-#if !TARGET_OS_SIMULATOR
 /* Copyright (c) 2013-2018 by Mercer Road Corp
  *
  * Permission to use, copy, modify or distribute this software in binary or source form
@@ -51,7 +49,7 @@ typedef struct vx_resp_connector_create {
     char *version_id;
 
     /**
-     * Type of backend used.
+     * Type of backend used, as defined in the `vx_backend_type` enum in `VxcTypes.h`. For Vixox SDK version 5, this will always be XMPP (`1`).
      */
     int backend_type;
 } vx_resp_connector_create_t;
@@ -1350,7 +1348,7 @@ typedef struct vx_resp_account_list_buddies_and_groups {
     vx_group_t **groups;
 } vx_resp_account_list_buddies_and_groups_t;
 
-/**
+/**z
  * The response for vx_req_session_send_message_t
  *
  * The XML for this response can be found here: \ref Session_SendMessage_1
@@ -1365,6 +1363,7 @@ typedef struct vx_resp_session_send_message {
     vx_resp_base_t base;
 } vx_resp_session_send_message_t;
 
+#ifndef DOXYGEN_MAM_SKIP
 /**
  * The response for vx_req_session_archive_query_t.
  * \see vx_req_session_archive_query
@@ -1382,7 +1381,7 @@ typedef struct vx_resp_session_archive_query {
      */
     char *query_id;
 } vx_resp_session_archive_query_t;
-
+#endif
 /**
  * The response for vx_req_account_set_presence_t
  *
@@ -1692,22 +1691,22 @@ typedef struct vx_resp_aux_get_render_devices {
     vx_device_t **render_devices;
 
     /**
-     * The render device currently in use by the Vivox SDK.
+     * The render device currently in use by the Vivox SDK for the requested user
      */
     vx_device_t *current_render_device;
 
     /**
-     * The effective render device
+     * The effective render device of the requested user
      */
     vx_device_t *effective_render_device;
 
     /**
-     * The default system render device
+     * The default system render device of the requested user
      */
     vx_device_t *default_render_device;
 
     /**
-     * The default communication render device
+     * The default communication render device of the requested user
      */
     vx_device_t *default_communication_render_device;
 } vx_resp_aux_get_render_devices_t;
@@ -1737,22 +1736,22 @@ typedef struct vx_resp_aux_get_capture_devices {
     vx_device_t **capture_devices;
 
     /**
-     * The current capture device
+     * The current capture device of the requested user
      */
     vx_device_t *current_capture_device;
 
     /**
-     * The effective capture device
+     * The effective capture device of the requested user
      */
     vx_device_t *effective_capture_device;
 
     /**
-     * The default system capture device
+     * The default system capture device of the requested user
      */
     vx_device_t *default_capture_device;
 
     /**
-     * The default communication capture device
+     * The default communication capture device of the requested user
      */
     vx_device_t *default_communication_capture_device;
 } vx_resp_aux_get_capture_devices_t;
@@ -1935,6 +1934,46 @@ typedef struct vx_resp_aux_set_vad_properties {
      */
     vx_resp_base_t base;
 } vx_resp_aux_set_vad_properties_t;
+
+/**
+ * The response for vx_req_aux_get_derumbler_properties_t
+ *
+ * \see vx_req_aux_set_derumbler_properties
+ * \ingroup devices
+ */
+typedef struct vx_resp_aux_get_derumbler_properties {
+    /**
+     * The common properties for all responses.
+     */
+    vx_resp_base_t base;
+
+    /**
+     * Whether the derumbler should be enabled (default=1) or disabled (0)
+     */
+    int enabled;
+
+    /**
+     * The 'stopband corner frequency' is the frequency where the derumbler high-pass filter
+     * enters into full attenuation. All frequencies at and below this corner frequency will be reduced
+     * greatly in amplitude. Frequencies above this corner frequency will remain at their original
+     * amplitude besides the frequencies that are just above the corner frequency.
+     * Valid values are: 15, 60 (default), 100.
+     */
+    int stopband_corner_frequency;
+} vx_resp_aux_get_derumbler_properties_t;
+
+/**
+ * The response for vx_req_aux_set_derumbler_properties_t
+ *
+ * \see vx_req_aux_set_derumbler_properties
+ * \ingroup devices
+ */
+typedef struct vx_resp_aux_set_derumbler_properties {
+    /**
+     * The common properties for all responses.
+     */
+    vx_resp_base_t base;
+} vx_resp_aux_set_derumbler_properties_t;
 
 /**
  * The response for vx_req_aux_render_audio_stop_t
@@ -2471,7 +2510,7 @@ typedef struct vx_resp_account_send_message {
      */
     char *request_id;
 } vx_resp_account_send_message_t;
-
+#ifndef DOXYGEN_MAM_SKIP
 /**
  * The response for vx_req_account_archive_query.
  *
@@ -2490,7 +2529,7 @@ typedef struct vx_resp_account_archive_query {
      */
     char *query_id;
 } vx_resp_account_archive_query_t;
-
+#endif
 /**
  * The response for vx_req_aux_notify_application_state_change_t
  *
@@ -2519,7 +2558,8 @@ typedef struct vx_resp_account_control_communications {
 
     vx_resp_base_t base;
     /**
-     * Line feed separated list of blocked URIs (only set for vx_control_communications_operation_list, otherwise null)
+     * Line feed separated list of blocked or muted URIs.
+     * May be null for clear list operations or if no one were muted or blocked.
      */
     char *blocked_uris;
 } vx_resp_account_control_communications_t;
@@ -2551,4 +2591,3 @@ VIVOXSDK_DLLEXPORT int destroy_resp(vx_resp_base_t *pCmd);
 #endif
 
 #pragma pack(pop)
-#endif

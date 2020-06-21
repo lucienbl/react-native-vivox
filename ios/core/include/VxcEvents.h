@@ -1,5 +1,3 @@
-#include <TargetConditionals.h>
-#if !TARGET_OS_SIMULATOR
 /* Copyright (c) 2013-2018 by Mercer Road Corp
  *
  * Permission to use, copy, modify or distribute this software in binary or source form
@@ -347,7 +345,7 @@ typedef struct vx_evt_message {
      */
     char *application_stanza_body;
 } vx_evt_message_t;
-
+#ifndef DOXYGEN_MAM_SKIP
 /**
  * Presented when a message is found in response to vx_req_session_archive_query request. This event will be triggered for every message found.
  * \note V5 only.
@@ -413,7 +411,7 @@ typedef struct vx_evt_session_archive_message {
      */
     char *language;
 } vx_evt_session_archive_message_t;
-
+#endif
 /**
  * Presented when an incoming transcribed text has arrived from a participant in an open session.
  *
@@ -451,8 +449,12 @@ typedef struct vx_evt_transcribed_message {
      * The message is from the current logged in user
      */
     int is_current_user;
+    /**
+     * The displayname if the participant_uri had a displayname
+     */
+    char *participant_displayname;
 } vx_evt_transcribed_message_t;
-
+#ifndef DOXYGEN_MAM_SKIP
 /**
  * Presented when a channel history query is completed.
  * There will be one vx_evt_session_archive_query_end event for every query started with vx_req_session_archive_query request.
@@ -513,7 +515,7 @@ typedef struct vx_evt_session_archive_query_end {
      */
     unsigned int count;
 } vx_evt_session_archive_query_end_t;
-
+#endif
 /**
  * The auxiliary 'audio properties' events are used by the SDK sound system to present
  * audio information to the application, which may be used to create a visual representation of the speaker
@@ -1324,7 +1326,7 @@ typedef struct vx_evt_participant_added {
     char *application;
 
     /**
-     * This field will indicate if the user is loggen in anonymously (as a guest)
+     * This field will indicate if the user is logged in anonymously (as a guest)
      * 0 = anthenticated user, 1 = Anonymous (Guest) user
      * This is only supported on channel calls.
      */
@@ -1334,10 +1336,10 @@ typedef struct vx_evt_participant_added {
      * The Display Name of the participant if in a channel or in a P2P initiated session.
      * This field will not be populated for callee in a text initiated P2P session.
      *
-     * The displayname field will contain the following information if available:
-     *   - 1) buddy display name (if not available then)
-     *   - 2) sip display name (only available for the callee, not available for caller.  If this is not available then)
-     *   - 3) account name (unless the account is out of domain then)
+     * The displayname field will contain one of the following values (in order) based on availability:
+     *   - 1) buddy display name
+     *   - 2) sip display name (only available for the callee, not available for caller)
+     *   - 3) account name (not available if the account is out of domain)
      *   - 4) uri without the sip: (ex: username@foo.vivox.com)
      */
     char *displayname;
@@ -1422,7 +1424,11 @@ typedef struct vx_evt_participant_removed {
  */
 typedef enum {
     participant_diagnostic_state_speaking_while_mic_muted = 1,
-    participant_diagnostic_state_speaking_while_mic_volume_zero = 2
+    participant_diagnostic_state_speaking_while_mic_volume_zero = 2,
+    participant_diagnostic_state_no_capture_device = 3,
+    participant_diagnostic_state_no_render_device = 4,
+    participant_diagnostic_state_capture_device_read_errors = 5,
+    participant_diagnostic_state_render_device_write_errors = 6
 } vx_participant_diagnostic_state_t;
 
 /**
@@ -1487,7 +1493,6 @@ typedef struct vx_evt_participant_updated {
     int is_muted_for_me;
 
     /**
-     * NOT CURRENTLY IMPLEMENTED
      * Indicates whether or not this participant's text is locally muted for the user
      */
     int is_text_muted_for_me;
@@ -1503,8 +1508,10 @@ typedef struct vx_evt_participant_updated {
     vx_participant_type type;
 
     /**
-     * A list of diagnostic states to help tell the application that the participant is attempting to speak
-     * but the system is not in a state to propogate that speech (mic muted etc).
+     * A list of diagnostic states.
+     * This helps tell the application that:
+     *  - The participant is attempting to speak, but the system is not in a state to propogate that speech (mic muted etc).
+     *  - The participant has unavailable capture or render devices due to certain causes.
      */
     vx_participant_diagnostic_state_t *diagnostic_states;
 
@@ -1528,6 +1535,22 @@ typedef struct vx_evt_participant_updated {
      * The message is from the current logged in user
      */
     int is_current_user;
+
+    /**
+     * The participant's capture device is unavailable due to reasons other than muting.
+     * Check the event's "diagnostic_states" for the cause (available for local participants only).
+     * If the participant's render device is still operating, then the participant is "listen only".
+     * If both capture and render devices are unavailable, then the participant is "unavailable"/"on hold".
+     */
+    int has_unavailable_capture_device;
+
+    /**
+     * The participant's render device is unavailable.
+     * Check the event's "diagnostic_states" for the cause (available for local participants only).
+     * If the participant's capture device is still operating, then the participant is "speak only"/"deaf".
+     * If both capture and render devices are unavailable, then the participant is "unavailable"/"on hold".
+     */
+    int has_unavailable_render_device;
 } vx_evt_participant_updated_t;
 
 /**
@@ -2038,6 +2061,11 @@ typedef struct vx_evt_audio_device_hot_swap {
      * the new active device
      */
     vx_device_t *relevant_device;
+    /**
+     * Account handle of the user whose device was changed as a result of the
+     * hot swap event.
+     */
+    VX_HANDLE account_handle;
 } vx_evt_audio_device_hot_swap_t;
 
 /**
@@ -2088,8 +2116,13 @@ typedef struct vx_evt_user_to_user_message {
      * Custom application stanza body (optional, default NULL).
      */
     char *application_stanza_body;
-} vx_evt_user_to_user_message_t;
 
+    /**
+     * The displayname if the from_uri had a displayname
+     */
+    char *from_displayname;
+} vx_evt_user_to_user_message_t;
+#ifndef DOXYGEN_MAM_SKIP
 /**
  * Presented when a message is found in response to vx_req_account_archive_query request . This event will be triggered for every message found.
  * \note V5 only.
@@ -2209,7 +2242,7 @@ typedef struct vx_evt_account_archive_query_end {
      */
     unsigned int count;
 } vx_evt_account_archive_query_end_t;
-
+#endif
 /**
  * This event is raised when a server reports directed message send failure.
  * \see vx_req_account_send_message
@@ -2242,6 +2275,96 @@ typedef struct vx_evt_account_send_message_failed {
 } vx_evt_account_send_message_failed_t;
 
 /**
+* This event is raised when a Text-to-Speech message injection started.
+* \note V5 only.
+*
+* \ingroup texttospeech
+*/
+typedef struct vx_evt_tts_injection_started {
+    /**
+     * The common properties for all events
+     */
+    vx_evt_base_t base;
+
+    /**
+     * The number of consumers (active sessions and/or local playback players) to which the message is about to get injected.
+     */
+    unsigned int num_consumers;
+
+    /**
+     * The ID of the utterance this event relates to.
+     */
+    vx_tts_utterance_id utterance_id;
+
+    /**
+     * The duration in seconds of the utterance.
+     */
+    double utterance_duration;
+
+    /**
+     * The destination to which the utterance was injected.
+     */
+    vx_tts_destination tts_destination;
+} vx_evt_tts_injection_started_t;
+
+
+/**
+ * This event is raised when an injection of a Text-to-Speech message has ended.
+ * \note V5 only.
+ *
+ * \ingroup texttospeech
+ */
+typedef struct vx_evt_tts_injection_ended {
+    /**
+      * The common properties for all events
+      */
+    vx_evt_base_t base;
+
+    /**
+     * The number of consumers (active sessions and/or local playback players) to which the message was injected.
+     */
+    unsigned int num_consumers;
+
+    /**
+     * The ID of the utterance this event relates to.
+     */
+    vx_tts_utterance_id utterance_id;
+
+    /**
+     * The destination to which the utterance was injected.
+     */
+    vx_tts_destination tts_destination;
+} vx_evt_tts_injection_ended_t;
+
+/**
+ * This event is raised when an injection of a Text-to-Speech message has failed.
+ * \note V5 only.
+ *
+ * \ingroup texttospeech
+ */
+typedef struct vx_evt_tts_injection_failed {
+    /**
+      * The common properties for all events
+      */
+    vx_evt_base_t base;
+
+    /**
+     * The failed injection's resultant error code.
+     */
+    vx_tts_status status;
+
+    /**
+     * The ID of the utterance this event relates to.
+     */
+    vx_tts_utterance_id utterance_id;
+
+    /**
+     * The destination to which the utterance was injected.
+     */
+    vx_tts_destination tts_destination;
+} vx_evt_tts_injection_failed_t;
+
+/**
  * Used to free any event of any type
  * \ingroup memorymanagement
  */
@@ -2254,4 +2377,3 @@ VIVOXSDK_DLLEXPORT int destroy_evt(vx_evt_base_t *pCmd);
 #endif
 
 #pragma pack(pop)
-#endif
