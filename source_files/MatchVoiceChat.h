@@ -1,5 +1,5 @@
-#include <TargetConditionals.h>
-#if !TARGET_OS_SIMULATOR
+#include "Platform.h"
+#if !IOS_SIMULATOR
 /* Copyright (c) 2016-2018 by Mercer Road Corp
  *
  * Permission to use, copy, modify or distribute this software in binary or source form
