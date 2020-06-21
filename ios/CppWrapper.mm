@@ -1,23 +1,37 @@
 #include <TargetConditionals.h>
 #if !TARGET_OS_SIMULATOR
-#import "CppWrapper.h"
 #import <React/RCTLog.h>
+#import <AVFoundation/AVAudioSession.h>
+
+#import "CppWrapper.h"
 #import "../source_files/MatchVoiceChat.h"
-#import "AVAudioHelper.h"
 
 @implementation CppWrapper {
     VivoxClientApi::MatchVoiceChat matchVoiceChat;
-    AVAudioHelper *avAudioHelper;
 }
 
 - (void) connect:(NSString *)server issuer:(NSString *)issuer realm:(NSString *)realm {
+    RCTLogInfo(@"Initializing audio session...");
+    [self initializeAudioSession];
     RCTLogInfo(@"Connecting...");
     const char * serverString = [server cStringUsingEncoding:NSASCIIStringEncoding];
     const char * issuerString = [issuer cStringUsingEncoding:NSASCIIStringEncoding];
     const char * realmString = [realm cStringUsingEncoding:NSASCIIStringEncoding];
 
     matchVoiceChat.ServerConnect(serverString, issuerString, realmString);
-    [avAudioHelper setSpeakerPhone:true];
+}
+
+- (void) initializeAudioSession {
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    if (audioSession == nil) {
+        return;
+    }
+
+    NSError *error = nil;
+    [audioSession setCategory: AVAudioSessionCategoryPlayAndRecord
+                         mode: AVAudioSessionModeDefault
+                      options: AVAudioSessionCategoryOptionAllowBluetooth
+                        error: &error];
 }
 
 - (void) setLoginCredentials:(NSString *)userId userToken:(NSString *)userToken {
